@@ -1,4 +1,4 @@
-db_setup
+db_setup.js
 # Logs
 logs
 *.log
