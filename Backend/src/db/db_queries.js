@@ -34,9 +34,22 @@ async function createProducts() {
 }
 
 async function createOrder(details) {
-    const products = await Promise.all(details.productIds.map(productId => getProductById(productId)));
-    const order = await sequelize.models.Order.create({ price: details.price, name: details.name, address: details.address, date: new Date() });
-    await order.addProducts(products);
+    const productsWithQuantity = await Promise.all(details.productsData.map(async ({ id, quantity }) => {
+        const product = await getProductById(id);
+        console.log({ product, quantity });
+        return { product, quantity }
+    }));
+
+    const order = await sequelize.models.Order.create({
+        price: details.price,
+        name: details.name,
+        address: details.address,
+        date: new Date(),
+    });
+
+    await Promise.all(productsWithQuantity.map(async ({ product, quantity }) => {
+        await order.addProduct(product, { through: { quantity } });
+    }));
 }
 
 export { getAllProducts, getProductById, createOrder, createProducts, getAllOffers };

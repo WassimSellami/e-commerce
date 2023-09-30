@@ -42,7 +42,16 @@ async function setupDB() {
         },
     });
 
-    Order.belongsToMany(Product, { through: 'OrderProduct' });
+    const OrderProduct = sequelize.define('OrderProduct', {
+        quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 1,
+        },
+    });
+
+    Order.belongsToMany(Product, { through: OrderProduct });
+    Product.belongsToMany(Order, { through: OrderProduct });
 }
 
 setupDB();
