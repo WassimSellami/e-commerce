@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Product } from '../products';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../services/cart.service';
 import { ProductDetailService } from '../services/product-detail.service';
@@ -14,7 +12,6 @@ export class ProductDetailComponent {
   product: any;
 
   constructor(
-    private http: HttpClient,
     private route: ActivatedRoute,
     private cartService: CartService,
     private productDetailService: ProductDetailService
@@ -28,8 +25,8 @@ export class ProductDetailComponent {
     })
   }
 
-  addToCart(){
-    this.cartService.addToCart(this.product);
+  addToCart() {
+    this.cartService.addToCart(this.product, 2);
   }
 
 }

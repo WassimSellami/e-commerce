@@ -8,7 +8,8 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent {
-  items = this.cartService.getItems();
+  productsData = this.cartService.getProductsData();
+  items = Array.from(this.productsData.entries()).map(([product, quantity]) => ({ product, quantity }));
   itemsPrice = 0
   shippingPrice = 0
   orderTotalPrice = 0
@@ -22,31 +23,20 @@ export class CartComponent {
     private formBuilder: FormBuilder,
   ) { }
 
-  getItemsPrice(): void {
-    this.itemsPrice = 0;
-    this.items.forEach((item) => {
-      this.itemsPrice += item.price;
-    });
-  }
-
-  getShippingPrice(): void {
-    this.shippingPrice = 10
-  }
-
   getOrderTotalPrice(): number {
-    this.getItemsPrice();
-    this.getShippingPrice();
+    this.itemsPrice = this.cartService.getItemsPrice();
+    this.shippingPrice = this.cartService.getShippingPrice();
     return this.orderTotalPrice = this.itemsPrice + this.shippingPrice;
   }
 
   onSubmit(): void {
-    const productIds = this.cartService.getItems().map(product => product.id);
-    const orderDetails =  {
+    const productsData = Array.from(this.productsData, ([product, quantity]) => ({ id:product.id, quantity }));
+    const orderDetails = {
       "orderDetails": {
         "price": this.orderTotalPrice,
         "name": this.checkoutForm.value.name,
         "address": this.checkoutForm.value.address,
-        "productIds": productIds
+        "productsData": productsData
       }
     }
     this.cartService.createOrder(orderDetails).subscribe(
@@ -55,7 +45,7 @@ export class CartComponent {
         window.alert('Successful Operation');
         this.cartService.clearCart();
         this.checkoutForm.reset();
-        this.items = this.cartService.getItems();
+        this.items = [];
       },
       (error) => {
         console.error('Internal Server Error: Order Not Created', error);

@@ -6,9 +6,17 @@
 
 <div *ngIf="items && items.length > 0; else noItems">
   <div class="box">
+    <div class="cart-item">
+      <span>Product</span>
+      <span>Unit Price</span>
+      <span>Quantity</span>
+      <span>Total Price</span>
+    </div>
     <div class="cart-item" *ngFor="let item of items">
-      <span>{{ item.name }}</span>
-      <span>{{ item.price | currency:'EUR' }}</span>
+      <span>{{ item.product.name }}</span>
+      <span>{{ item.product.price | currency:'EUR' }}</span>
+      <span>{{ item.quantity }}</span>
+      <span>{{ item.product.price * item.quantity| currency:'EUR' }}</span>
     </div>
   </div>
 
@@ -28,7 +36,7 @@
       <span>{{ getOrderTotalPrice() | currency:'EUR' }}</span>
     </div>
   </div>
-  
+
   <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
     <div>
       <label for="name">
