@@ -7,38 +7,36 @@ import { Injectable } from '@angular/core';
 })
 export class CartService {
   baseURL = 'http://localhost:4200/api/';
-  productQuantity: Map<Product, number> = new Map();
-
+  cartProducts: Product[] = [];
+  productQuantity: Map<number, number> = new Map();
+  cartProductsPrice: number = 0;
   constructor(
     private http: HttpClient
   ) { }
 
   addToCart(product: Product, quantity: number) {
-    if (this.productQuantity.has(product)) {
-      this.productQuantity.set(product, this.productQuantity.get(product)! + quantity);
-    } else {
-      this.productQuantity.set(product, quantity);
-    }
+    this.updateCartProducts(product);
+    this.productQuantity.set(product.id, (this.productQuantity.get(product.id) || 0) + quantity);
+    this.updateCartProductsPrice(product.price, quantity);
   }
 
-  getProductsData() {
-    return this.productQuantity;
+  updateCartProductsPrice(price: number, quantity: number) {
+    this.cartProductsPrice += price * quantity
+  }
+
+  updateCartProducts(product: Product) {
+    if (!this.productQuantity.has(product.id)) {
+      this.cartProducts.push(product);
+    }
   }
 
   clearCart() {
     this.productQuantity.clear();
+    this.cartProducts = []
   }
 
   getShippingPrices() {
     return this.http.get<{ type: string, price: number }[]>('/assets/shipping.json');
-  }
-
-  getItemsPrice(): number {
-    var price = 0;
-    this.productQuantity.forEach((quantity, product) => {
-      price += product.price * quantity;
-    });
-    return price;
   }
 
   getShippingPrice(): number {
@@ -48,5 +46,18 @@ export class CartService {
   createOrder = (orderDetails: any) => {
     const url = `${this.baseURL}orders/create`;
     return this.http.post(url, orderDetails);
+  }
+
+  // getters
+  getProductQuantity() {
+    return this.productQuantity;
+  }
+
+  getCartProducts() {
+    return this.cartProducts;
+  }
+
+  getCartProdcutsPrice() {
+    return this.cartProductsPrice;
   }
 }
