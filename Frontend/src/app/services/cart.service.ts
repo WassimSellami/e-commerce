@@ -52,21 +52,22 @@ export class CartService {
     this.save();
   }
 
-  deleteCartProduct(product: Product) {
+  deleteFromCart(product: Product) {
+    this.updateCartProductsPrice(product.price, this.productQuantity.get(product.id)!, false);
     this.productQuantity.delete(product.id);
     const index = this.cartProducts.indexOf(product);
     this.cartProducts.splice(index, 1);
     this.save();
   }
-
+  
   clearCart() {
     this.productQuantity.clear();
     this.cartProducts = []
+    this.save();
   }
 
   updateCartProductsPrice(price: number, quantity: number, add: boolean) {
     this.cartProductsPrice += price * quantity * (add ? 1 : -1);
-    console.log(this.cartProductsPrice);
   }
 
   getShippingPrices() {
@@ -84,7 +85,6 @@ export class CartService {
 
   // getters
   getProductQuantity() {
-    this.retrieve();
     return this.productQuantity;
   }
 

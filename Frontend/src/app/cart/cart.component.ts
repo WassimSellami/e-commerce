@@ -1,15 +1,16 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { CartService } from '../services/cart.service';
+import { Product } from '../products';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent {
-  productQuantity = this.cartService.getProductQuantity();
-  cartProducts = this.cartService.getCartProducts();
+export class CartComponent implements OnInit {
+  productQuantity = new Map();
+  cartProducts: Product[] = [];
   cartProductsPrice = 0
   shippingPrice = 0
   orderTotalPrice = 0
@@ -22,6 +23,17 @@ export class CartComponent {
     private cartService: CartService,
     private formBuilder: FormBuilder,
   ) { }
+
+  ngOnInit(): void {
+    this.cartService.retrieve();
+    this.updateCart();
+  }
+
+  updateCart(){
+    this.productQuantity = this.cartService.productQuantity
+    this.cartProducts = this.cartService.cartProducts
+    this.cartProductsPrice = this.cartService.cartProductsPrice
+  }
 
   getOrderTotalPrice(): number {
     this.cartProductsPrice = this.cartService.getCartProdcutsPrice();
@@ -43,9 +55,9 @@ export class CartComponent {
       (response) => {
         console.log(response);
         window.alert('Successful Operation');
-        this.cartService.clearCart();
         this.checkoutForm.reset();
-        this.cartProducts = [];
+        this.cartService.clearCart();
+        this.updateCart();
       },
       (error) => {
         console.error('Internal Server Error: Order Not Created', error);
@@ -56,8 +68,7 @@ export class CartComponent {
   
   onDelteCartProduct(productId: number): void{
     const product = this.cartProducts.find(product => product.id === productId);
-    this.cartService.updateCartProductsPrice(product!.price, this.productQuantity.get(productId)!, false);
-    this.cartService.deleteCartProduct(product!);
-    this.cartProductsPrice = this.cartService.cartProductsPrice
+    this.cartService.deleteFromCart(product!);
+    this.updateCart();
   }
 }
