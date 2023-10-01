@@ -53,4 +53,11 @@ export class CartComponent {
       }
     );
   }
+
+  onDelteCartProduct(productId: number): void{
+    const product = this.cartProducts.find(product => product.id === productId);
+    this.cartService.updateCartProductsPrice(product!.price, this.productQuantity.get(productId)!, false);
+    this.cartService.deleteCartProduct(product!);
+    this.cartProductsPrice = this.cartService.cartProductsPrice
+  }
 }

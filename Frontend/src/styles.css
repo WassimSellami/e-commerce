@@ -128,9 +128,7 @@ app-top-bar h1 {
 
 /* Checkout Cart, Shipping Prices */
 .box {
-  width: 100%;
-  min-width: 400px;
-  max-width: 450px;
+  width: 650px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -146,8 +144,6 @@ app-top-bar h1 {
 .cart-item,
 .shipping-item {
   width: 100%;
-  min-width: 400px;
-  max-width: 450px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -158,8 +154,6 @@ app-top-bar h1 {
 
 .total-price-item {
   width: 100%;
-  min-width: 400px;
-  max-width: 450px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -167,5 +161,9 @@ app-top-bar h1 {
   margin-bottom: 8px;
   border-radius: 2px;
   font-size: larger;
+  font-weight: bold;
+}
+
+.cart-item.header {
   font-weight: bold;
 }

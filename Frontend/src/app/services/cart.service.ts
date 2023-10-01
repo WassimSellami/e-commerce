@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../products';
 import { Injectable } from '@angular/core';
+import { promise } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,7 @@ export class CartService {
   addToCart(product: Product, quantity: number) {
     this.updateCartProducts(product);
     this.productQuantity.set(product.id, (this.productQuantity.get(product.id) || 0) + quantity);
-    this.updateCartProductsPrice(product.price, quantity);
-  }
-
-  updateCartProductsPrice(price: number, quantity: number) {
-    this.cartProductsPrice += price * quantity
+    this.updateCartProductsPrice(product.price, quantity, true);
   }
 
   updateCartProducts(product: Product) {
@@ -30,9 +27,20 @@ export class CartService {
     }
   }
 
+  deleteCartProduct(product: Product) {
+    this.productQuantity.delete(product.id);
+    const index = this.cartProducts.indexOf(product);
+    this.cartProducts.splice(index, 1);
+  }
+
   clearCart() {
     this.productQuantity.clear();
     this.cartProducts = []
+  }
+
+  updateCartProductsPrice(price: number, quantity: number, add: boolean) {
+    this.cartProductsPrice += price * quantity * (add ? 1 : -1);
+    console.log(this.cartProductsPrice);
   }
 
   getShippingPrices() {
