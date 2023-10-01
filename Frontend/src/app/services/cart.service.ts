@@ -14,23 +14,49 @@ export class CartService {
   constructor(
     private http: HttpClient
   ) { }
+  save(): void {
+    // Save data to local storage
+    localStorage.setItem('productQuantity', JSON.stringify(Array.from(this.productQuantity.entries())));
+    localStorage.setItem('cartProducts', JSON.stringify(this.cartProducts));
+    localStorage.setItem('cartProductsPrice', this.cartProductsPrice.toString());
+    // localStorage.setItem('orderTotalPrice', this.orderTotalPrice.toString());
+  }
+    retrieve(): void {
+    // Retrieve data from local storage on component initialization
+    const storedProductQuantity = localStorage.getItem('productQuantity');
+    const storedCartProducts = localStorage.getItem('cartProducts');
+    const storedCartProductsPrice = localStorage.getItem('cartProductsPrice');
+
+    if (storedProductQuantity) {
+      this.productQuantity = new Map(JSON.parse(storedProductQuantity));
+    }
+    if (storedCartProducts) {
+      this.cartProducts = JSON.parse(storedCartProducts);
+    }
+    if (storedCartProductsPrice) {
+      this.cartProductsPrice = parseFloat(storedCartProductsPrice);
+    }
+  }
 
   addToCart(product: Product, quantity: number) {
     this.updateCartProducts(product);
     this.productQuantity.set(product.id, (this.productQuantity.get(product.id) || 0) + quantity);
     this.updateCartProductsPrice(product.price, quantity, true);
+    this.save();
   }
 
   updateCartProducts(product: Product) {
     if (!this.productQuantity.has(product.id)) {
       this.cartProducts.push(product);
     }
+    this.save();
   }
 
   deleteCartProduct(product: Product) {
     this.productQuantity.delete(product.id);
     const index = this.cartProducts.indexOf(product);
     this.cartProducts.splice(index, 1);
+    this.save();
   }
 
   clearCart() {
@@ -58,6 +84,7 @@ export class CartService {
 
   // getters
   getProductQuantity() {
+    this.retrieve();
     return this.productQuantity;
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { CartService } from '../services/cart.service';
 
@@ -53,7 +53,7 @@ export class CartComponent {
       }
     );
   }
-
+  
   onDelteCartProduct(productId: number): void{
     const product = this.cartProducts.find(product => product.id === productId);
     this.cartService.updateCartProductsPrice(product!.price, this.productQuantity.get(productId)!, false);
