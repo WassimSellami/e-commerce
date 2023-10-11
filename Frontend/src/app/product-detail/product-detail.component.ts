@@ -10,6 +10,7 @@ import { ProductDetailService } from '../services/product-detail.service';
 })
 export class ProductDetailComponent {
   product: any;
+  quantity: number = 1;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,6 +27,6 @@ export class ProductDetailComponent {
   }
 
   addToCart() {
-    this.cartService.addToCart(this.product, 1);
+    this.cartService.addToCart(this.product, this.quantity);
   }
 }

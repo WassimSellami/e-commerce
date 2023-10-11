@@ -2,6 +2,8 @@
 <div class="box">
     <h1> {{ product?.name }} </h1>
     <p> {{ product?.description }} </p>
+    <label for="quantity">Quantity:</label>
+    <input type="number" [(ngModel)]="quantity" min="1">
     <a class="button" (click)="addToCart()">
         Add to cart
     </a>

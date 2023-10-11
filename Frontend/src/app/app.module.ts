@@ -11,10 +11,12 @@ import { ProductAlertsComponent } from './product-alerts/product-alerts.componen
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { CartComponent } from './cart/cart.component';
 import { ShippingComponent } from './shipping/shipping.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   imports: [
+    FormsModule,
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
