@@ -4,7 +4,7 @@
   <a routerLink="/shipping">Shipping Prices</a>
 </p> -->
 
-<div *ngIf="cartProducts && cartProducts.length > 0; else noCartProducts">
+<div *ngIf="items && items.size > 0; else noCartProducts">
   <div class="box">
     <div class="cart-item header">
       <span>Product</span>
@@ -14,19 +14,19 @@
       <span>Action</span>
     </div>
 
-    <div class="cart-item" *ngFor="let product of cartProducts">
-      <span>{{ product.name }}</span>
-      <span>{{ product.price | currency:'EUR' }}</span>
-      <span>{{ this.productQuantity.get(product.id) }}</span>
-      <span>{{ product.price * this.productQuantity.get(product.id)! | currency:'EUR' }}</span>
-      <span><button class="button" type="button" (click)="onDelteCartProduct(product.id)">Delete</button></span>
+    <div class="cart-item" *ngFor="let obj of items | keyvalue">
+      <span>{{ obj.value.product.name }}</span>
+      <span>{{ obj.value.product.price | currency:'EUR' }}</span>
+      <input type="number" [(ngModel)]="obj.value.quantity" (ngModelChange)="onUpdateItemsQuantity()" />
+      <span>{{ obj.value.product.price * obj.value.quantity! | currency:'EUR' }}</span>
+      <span><button class="button" type="button" (click)="onDelteCartProduct(obj.value.product.id)">Delete</button></span>
     </div>
   </div>
 
   <div class="box">
     <div class="price-item">
       <span>Items: </span>
-      <span>{{cartProductsPrice | currency:'EUR'}}</span>
+      <span>{{itemsPrice | currency:'EUR'}}</span>
     </div>
 
     <div class="price-item">
@@ -36,7 +36,7 @@
 
     <div class="total-price-item">
       <span> Order Total: </span>
-      <span>{{ getOrderTotalPrice() | currency:'EUR' }}</span>
+      <span>{{ totalPrice | currency:'EUR' }}</span>
     </div>
   </div>
 

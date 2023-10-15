@@ -5,4 +5,9 @@ export interface Product {
   description: string;
 }
 
+export interface Item {
+  product: Product;
+  quantity: number;
+}
+
 

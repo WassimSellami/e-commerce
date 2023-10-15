@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Product } from '../products';
+import { Product, Item } from '../products';
 import { Injectable } from '@angular/core';
 import { promise } from 'protractor';
 
@@ -8,91 +8,82 @@ import { promise } from 'protractor';
 })
 export class CartService {
   baseURL = 'http://localhost:4200/api/';
-  cartProducts: Product[] = [];
-  productQuantity: Map<number, number> = new Map();
-  cartProductsPrice: number = 0;
+
+  itemsPrice: number = 0;
+  totalPrice: number = 0;
+  items: Map<number, Item> = new Map();
+  shippingPrice: number = 10;
+
+
   constructor(
     private http: HttpClient
   ) { }
   save(): void {
     // Save data to local storage
-    localStorage.setItem('productQuantity', JSON.stringify(Array.from(this.productQuantity.entries())));
-    localStorage.setItem('cartProducts', JSON.stringify(this.cartProducts));
-    localStorage.setItem('cartProductsPrice', this.cartProductsPrice.toString());
-    // localStorage.setItem('orderTotalPrice', this.orderTotalPrice.toString());
+    localStorage.setItem('items', JSON.stringify(Array.from(this.items.entries())));
+    localStorage.setItem('itemsPrice', this.itemsPrice.toString());
+    localStorage.setItem('totalPrice', this.totalPrice.toString());
   }
-    retrieve(): void {
+  retrieve(): void {
     // Retrieve data from local storage on component initialization
-    const storedProductQuantity = localStorage.getItem('productQuantity');
-    const storedCartProducts = localStorage.getItem('cartProducts');
-    const storedCartProductsPrice = localStorage.getItem('cartProductsPrice');
+    const storedItems = localStorage.getItem('items');
+    const storedTotalPrice = localStorage.getItem('totalPrice');
+    const storedItemsPrice = localStorage.getItem('itemsPrice');
 
-    if (storedProductQuantity) {
-      this.productQuantity = new Map(JSON.parse(storedProductQuantity));
+    if (storedItems) {
+      this.items = new Map(JSON.parse(storedItems));
     }
-    if (storedCartProducts) {
-      this.cartProducts = JSON.parse(storedCartProducts);
+    if (storedTotalPrice) {
+      this.totalPrice = parseFloat(storedTotalPrice);
     }
-    if (storedCartProductsPrice) {
-      this.cartProductsPrice = parseFloat(storedCartProductsPrice);
+    if (storedItemsPrice) {
+      this.itemsPrice = parseFloat(storedItemsPrice);
     }
   }
 
-  addToCart(product: Product, quantity: number) {
-    this.updateCartProducts(product);
-    this.productQuantity.set(product.id, (this.productQuantity.get(product.id) || 0) + quantity);
-    this.updateCartProductsPrice(product.price, quantity, true);
+  updateItemsPrice() {
+    this.itemsPrice = 0;
+    for (let item of this.items.values()) {
+      this.itemsPrice += item.product.price * item.quantity;
+    }
+  }
+
+  updatePrice() {
+    this.updateItemsPrice()
+    this.totalPrice = this.itemsPrice + this.shippingPrice;
+  }
+
+  deleteItem(id: number) {
+    this.items.delete(id);
+    this.updatePrice();
     this.save();
   }
 
-  updateCartProducts(product: Product) {
-    if (!this.productQuantity.has(product.id)) {
-      this.cartProducts.push(product);
+  updateItem(product: Product, qte: number) {
+    if (this.items.has(product.id)) {
+      this.items.get(product.id)!.quantity += qte;
     }
+    else {
+      let item: Item = { product: product, quantity: qte };
+      this.items.set(product.id, item);
+    }
+    this.updatePrice();
     this.save();
   }
 
-  deleteFromCart(product: Product) {
-    this.updateCartProductsPrice(product.price, this.productQuantity.get(product.id)!, false);
-    this.productQuantity.delete(product.id);
-    const index = this.cartProducts.indexOf(product);
-    this.cartProducts.splice(index, 1);
-    this.save();
-  }
-  
   clearCart() {
-    this.productQuantity.clear();
-    this.cartProducts = []
+    this.items.clear();
+    this.itemsPrice = 0;
+    this.totalPrice = 0;
     this.save();
-  }
-
-  updateCartProductsPrice(price: number, quantity: number, add: boolean) {
-    this.cartProductsPrice += price * quantity * (add ? 1 : -1);
   }
 
   getShippingPrices() {
     return this.http.get<{ type: string, price: number }[]>('/assets/shipping.json');
   }
 
-  getShippingPrice(): number {
-    return 10;
-  }
-
   createOrder = (orderDetails: any) => {
     const url = `${this.baseURL}orders/create`;
     return this.http.post(url, orderDetails);
-  }
-
-  // getters
-  getProductQuantity() {
-    return this.productQuantity;
-  }
-
-  getCartProducts() {
-    return this.cartProducts;
-  }
-
-  getCartProdcutsPrice() {
-    return this.cartProductsPrice;
   }
 }
