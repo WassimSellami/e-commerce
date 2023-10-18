@@ -10,9 +10,9 @@
     </a>
   </h3>
 
-  <p *ngIf="product.description">
-    Description: {{ product.description }}
-  </p>
+  <h2 *ngIf="product.description">
+    {{ product.price | currency:'EUR' }}
+  </h2>
 
   <button type="button" (click)="share()">
     Share

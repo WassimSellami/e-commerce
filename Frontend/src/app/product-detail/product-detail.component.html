@@ -1,6 +1,7 @@
 <br>
 <div class="box">
     <h1> {{ product?.name }} </h1>
+    <h2> {{ product?.price * quantity| currency:'EUR'}} </h2>
     <p> {{ product?.description }} </p>
     <label for="quantity">Quantity:</label>
     <input type="number" [(ngModel)]="quantity" min="1">

@@ -12,10 +12,13 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { CartComponent } from './cart/cart.component';
 import { ShippingComponent } from './shipping/shipping.component';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog'; // Import MatDialogModule
 
 
 @NgModule({
   imports: [
+    MatDialogModule,
     FormsModule,
     BrowserModule,
     HttpClientModule,
@@ -35,6 +38,7 @@ import { FormsModule } from '@angular/forms';
     ProductDetailComponent,
     CartComponent,
     ShippingComponent,
+    ConfirmationDialogComponent,
   ],
   bootstrap: [
     AppComponent

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
 import { ProductDetailService } from '../services/product-detail.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-product-detail',
@@ -14,6 +16,8 @@ export class ProductDetailComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
+    private dialog: MatDialog,
     private cartService: CartService,
     private productDetailService: ProductDetailService
   ) { }
@@ -28,5 +32,14 @@ export class ProductDetailComponent {
 
   addToCart() {
     this.cartService.updateItem(this.product, this.quantity);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { product: this.product, quantity: this.quantity },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.router.navigate(['/cart']);
+      }
+    });
   }
 }
