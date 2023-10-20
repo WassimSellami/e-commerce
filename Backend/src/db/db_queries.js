@@ -28,9 +28,9 @@ async function getProductById(productId) {
 }
 
 async function createProducts() {
-    await sequelize.models.Product.create({ name: 'Book4', description: "This is a book", price: 10 });
-    await sequelize.models.Product.create({ name: 'Phone4', description: "This is a phone", price: 150 });
-    await sequelize.models.Product.create({ name: 'Helmet4', description: "This is a Helmet", price: 50 });
+    await sequelize.models.Product.create({ name: 'Book', description: "This is a book", price: 10, quantityInStock : 1});
+    await sequelize.models.Product.create({ name: 'Phone', description: "This is a phone", price: 150, quantityInStock: 100 });
+    await sequelize.models.Product.create({ name: 'Helmet', description: "This is a Helmet", price: 50, quantityInStock: 100 });
 }
 
 async function createOrder(details) {
