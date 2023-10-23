@@ -86,4 +86,9 @@ export class CartService {
     const url = `${this.baseURL}orders/create`;
     return this.http.post(url, orderDetails);
   }
+
+  updateQuantityInStock = (leftQuantitits: { id: number; newQuantity: number; }[]) => {
+    const url = `${this.baseURL}products/updateQuantity`;
+    return this.http.post(url, { "leftQuantitits": leftQuantitits });
+  }
 }

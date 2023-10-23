@@ -30,14 +30,14 @@ export class CartComponent implements OnInit {
     this.updateVariables();
   }
 
-  updateVariables(){
+  updateVariables() {
     this.items = this.cartService.items
     this.itemsPrice = this.cartService.itemsPrice
     this.totalPrice = this.cartService.totalPrice
     this.shippingPrice = this.cartService.shippingPrice
   }
 
-  onUpdateItemsQuantity(){
+  onUpdateItemsQuantity() {
     this.updateServiceVariables();
     this.cartService.save();
     this.updateVariables();
@@ -57,9 +57,10 @@ export class CartComponent implements OnInit {
         "productsData": itemQuantityArray
       }
     }
+    this.updateStockQuantities();
+
     this.cartService.createOrder(orderDetails).subscribe(
       (response) => {
-        console.log(response);
         window.alert('Successful Operation');
         this.checkoutForm.reset();
         this.cartService.clearCart();
@@ -71,8 +72,19 @@ export class CartComponent implements OnInit {
       }
     );
   }
-  
-  onDelteCartProduct(productId: number): void{
+
+  updateStockQuantities(): void {
+    const leftQuantitits = Array.from(this.items, ([id, item]) => ({ id, newQuantity: this.items.get(id)?.product.quantityInStock! - item.quantity }));
+    this.cartService.updateQuantityInStock(leftQuantitits).subscribe(
+      (response) => {
+      },
+      (error) => {
+        console.error('Internal Server Error: Order Not Created', error);
+      }
+    );
+  }
+
+  onDelteCartProduct(productId: number): void {
     this.cartService.deleteItem(productId);
     this.updateVariables();
   }

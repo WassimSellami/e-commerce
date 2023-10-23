@@ -17,9 +17,11 @@
     <div class="cart-item" *ngFor="let obj of items | keyvalue">
       <span>{{ obj.value.product.name }}</span>
       <span>{{ obj.value.product.price | currency:'EUR' }}</span>
-      <input type="number" [(ngModel)]="obj.value.quantity" (ngModelChange)="onUpdateItemsQuantity()" min="1" />
+      <input type="number" [(ngModel)]="obj.value.quantity" (ngModelChange)="onUpdateItemsQuantity()" min="1"
+        [max]="obj.value.product.quantityInStock" />
       <span>{{ obj.value.product.price * obj.value.quantity! | currency:'EUR' }}</span>
-      <span><button class="button" type="button" (click)="onDelteCartProduct(obj.value.product.id)">Delete</button></span>
+      <span><button class="button" type="button"
+          (click)="onDelteCartProduct(obj.value.product.id)">Delete</button></span>
     </div>
   </div>
 

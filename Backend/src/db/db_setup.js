@@ -22,7 +22,11 @@ async function setupDB() {
         price: {
             type: DataTypes.DOUBLE,
             allowNull: false,
-        }
+        },
+        quantityInStock: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
     });
 
     const Order = sequelize.define('Order', {

@@ -3,14 +3,16 @@
 <div *ngFor="let product of products">
 
   <h3>
-    <a
-      [title]="product.name + ' details'"
-      [routerLink]="['/products', product.id]">
+    <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
       {{ product.name }}
     </a>
   </h3>
 
-  <h2 *ngIf="product.description">
+  <h2 *ngIf="product.quantityInStock">
+    {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}
+  </h2>
+
+  <h2 *ngIf="product.price">
     {{ product.price | currency:'EUR' }}
   </h2>
 
@@ -18,9 +20,7 @@
     Share
   </button>
 
-  <app-product-alerts
-    [product]="product"
-    (notify)="onNotify()">
+  <app-product-alerts [product]="product" (notify)="onNotify()">
   </app-product-alerts>
 
 </div>

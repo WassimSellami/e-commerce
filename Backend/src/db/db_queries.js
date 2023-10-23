@@ -28,9 +28,24 @@ async function getProductById(productId) {
 }
 
 async function createProducts() {
-    await sequelize.models.Product.create({ name: 'Book', description: "This is a book", price: 10, quantityInStock : 1});
+    await sequelize.models.Product.create({ name: 'Book', description: "This is a book", price: 10, quantityInStock: 1 });
     await sequelize.models.Product.create({ name: 'Phone', description: "This is a phone", price: 150, quantityInStock: 100 });
     await sequelize.models.Product.create({ name: 'Helmet', description: "This is a Helmet", price: 50, quantityInStock: 100 });
+}
+
+async function updateStockQuantities(leftQuantitits) {
+    try {
+        leftQuantitits.map(async item => {
+            const product = await getProductById(item.id)
+            if (!product) {
+                throw new Error(`Product with ID ${item.id} not found.`);
+            }
+            await product.update({ quantityInStock: item.newQuantity });
+        });
+
+    } catch (error) {
+        throw error;
+    }
 }
 
 async function createOrder(details) {
@@ -52,4 +67,4 @@ async function createOrder(details) {
     }));
 }
 
-export { getAllProducts, getProductById, createOrder, createProducts, getAllOffers };
+export { getAllProducts, getProductById, createOrder, createProducts, getAllOffers, updateStockQuantities };
