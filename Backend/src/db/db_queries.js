@@ -67,4 +67,32 @@ async function createOrder(details) {
     }));
 }
 
-export { getAllProducts, getProductById, createOrder, createProducts, getAllOffers, updateStockQuantities };
+async function createProduct(details) {
+    const product = await sequelize.models.Product.create({
+        price: details.price,
+        name: details.name,
+        description: details.description,
+        quantityInStock: details.quantityInStock
+    });
+}
+
+async function updateProduct(details) {
+    const product = await sequelize.models.Product.findByPk(details.id);
+    if (product) {
+        await product.update({
+            price: details.price,
+            name: details.name,
+            description: details.description,
+            quantityInStock: details.quantityInStock
+        });
+    }
+}
+
+async function deleteProduct(id) {
+    const product = await sequelize.models.Product.findByPk(id);
+    if (product) {
+        await product.destroy();
+    }
+}
+
+export { getAllProducts, getProductById, createOrder, createProducts, getAllOffers, updateStockQuantities, createProduct, updateProduct, deleteProduct };

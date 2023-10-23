@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class ProductDetailComponent {
   product: any;
   quantity: number = 1;
+  canAddToCart: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,12 +32,14 @@ export class ProductDetailComponent {
   }
 
   addToCart() {
+    this.canAddToCart = false;
     this.cartService.updateItem(this.product, this.quantity);
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: { product: this.product, quantity: this.quantity },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.canAddToCart = true;
       if (result) {
         this.router.navigate(['/cart']);
       }

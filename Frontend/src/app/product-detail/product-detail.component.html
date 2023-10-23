@@ -6,7 +6,5 @@
     <p> {{ product?.description }} </p>
     <label for="quantity">Quantity:</label>
     <input type="number" [(ngModel)]="quantity" min="1" [max]="product.quantityInStock">
-    <a class=" button" (click)="addToCart()">
-        Add to cart
-    </a>
+    <a class="button" (click)="canAddToCart ? addToCart() : $event.preventDefault()">Add to cart</a>
 </div>
