@@ -1,18 +1,32 @@
 <div class="products-list">
-    <div *ngFor="let product of products" class="product">
-        <h3>
-            <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
-                {{ product.name }}
-            </a>
-        </h3>
+    <div *ngFor="let product of products" class="product two-column">
+        <div>
+            <h3>
+                <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
+                    {{ product.name }}
+                </a>
+            </h3>
 
-        <h2 *ngIf="product.quantityInStock">
-            {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}
-        </h2>
+            <h2 *ngIf="product.quantityInStock">
+                {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}
+            </h2>
 
-        <h2 *ngIf="product.price">
-            {{ product.price | currency:'EUR' }}
-        </h2>
+            <h2 *ngIf="product.price">
+                {{ product.price | currency:'EUR' }}
+            </h2>
+        </div>
+        <div>
+            <br>
+            <button type="button" (click)="deleteProduct(product.id)">
+                Delete
+            </button>
+            <br>
+            <br>
+            <br>
+            <button type="button" (click)="editProduct(product.id)">
+                Edit
+            </button>
+        </div>
     </div>
     <button class="product big-text" type="button" click="(addProduct)">
         Add Product

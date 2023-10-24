@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/products';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
+import { AdminPageService } from 'src/app/services/admin-page.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -11,7 +12,8 @@ export class AdminPageComponent implements OnInit {
   products: Product[] = [];
 
   constructor(
-    private productDetailService: ProductDetailService
+    private productDetailService: ProductDetailService,
+    private adminPageService: AdminPageService
   ) { }
 
   ngOnInit() {
@@ -22,5 +24,24 @@ export class AdminPageComponent implements OnInit {
 
   addProduct = () => {
 
+  }
+
+  deleteProduct = (id: number) => {
+    this.adminPageService.deleteProduct(id).subscribe(
+      (response) => {
+        window.alert("Product deleted successfully!");
+        const index = this.products.findIndex(product => product.id === id);
+        if (index !== -1) {
+          this.products.splice(index, 1);
+        }
+      },
+      (error) => {
+        window.alert("Please Try again: " + error);
+      }
+    );
+  }
+
+  editProduct = (id: number) => {
+    window.alert("edit" + id);
   }
 }
