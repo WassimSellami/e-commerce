@@ -14,7 +14,8 @@ import { ShippingComponent } from './pages/shipping/shipping.component';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from './utility-components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AdminPageComponent } from './pages/admin-page/admin-page.component'; // Import MatDialogModule
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { ProductFormComponent } from './pages/product-form/product-form.component'; // Import MatDialogModule
 
 
 @NgModule({
@@ -26,10 +27,11 @@ import { AdminPageComponent } from './pages/admin-page/admin-page.component'; //
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: 'products', component: ProductListComponent },
-      { path: 'products/:productId', component: ProductDetailComponent },
+      { path: 'products/:id', component: ProductDetailComponent },
       { path: 'cart', component: CartComponent },
       { path: 'shipping', component: ShippingComponent },
       { path: 'adminPage', component: AdminPageComponent },
+      { path: 'productForm', component: ProductFormComponent },
     ])
   ],
   declarations: [
@@ -42,6 +44,7 @@ import { AdminPageComponent } from './pages/admin-page/admin-page.component'; //
     ShippingComponent,
     ConfirmationDialogComponent,
     AdminPageComponent,
+    ProductFormComponent,
   ],
   bootstrap: [
     AppComponent

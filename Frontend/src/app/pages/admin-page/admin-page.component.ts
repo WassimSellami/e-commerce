@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/products';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
 import { AdminPageService } from 'src/app/services/admin-page.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-page',
@@ -13,7 +14,8 @@ export class AdminPageComponent implements OnInit {
 
   constructor(
     private productDetailService: ProductDetailService,
-    private adminPageService: AdminPageService
+    private adminPageService: AdminPageService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -23,7 +25,11 @@ export class AdminPageComponent implements OnInit {
   }
 
   addProduct = () => {
+    this.router.navigate(['/productForm']);
+  }
 
+  editProduct = (id: number) => {
+    this.router.navigate(['/productForm', { "id": id }]);
   }
 
   deleteProduct = (id: number) => {
@@ -41,7 +47,5 @@ export class AdminPageComponent implements OnInit {
     );
   }
 
-  editProduct = (id: number) => {
-    window.alert("edit" + id);
-  }
+
 }

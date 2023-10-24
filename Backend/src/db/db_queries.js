@@ -86,12 +86,18 @@ async function updateProduct(details) {
             quantityInStock: details.quantityInStock
         });
     }
+    else {
+        throw new Error(`Product with ID ${id} not found.`);
+    }
 }
 
 async function deleteProduct(id) {
     const product = await sequelize.models.Product.findByPk(id);
     if (product) {
         await product.destroy();
+    }
+    else {
+        throw new Error(`Product with ID ${id} not found.`);
     }
 }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { ProductDetailService } from '../../services/product-detail.service';
@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css']
 })
-export class ProductDetailComponent {
+export class ProductDetailComponent implements OnInit {
   product: any;
   quantity: number = 1;
   canAddToCart: boolean = true;
@@ -21,11 +21,12 @@ export class ProductDetailComponent {
     private dialog: MatDialog,
     private cartService: CartService,
     private productDetailService: ProductDetailService
+
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.productDetailService.getProductDetails(params['productId']).subscribe((data) => {
+      this.productDetailService.getProductDetails(params['id']).subscribe((data) => {
         this.product = data;
       });
     })

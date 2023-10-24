@@ -60,7 +60,7 @@ router.put('/update', async (req, res) => {
 })
 
 router.delete('/delete', async (req, res) => {
-    const { id } = req.body;
+    const id = req.query.id;
     try {
         await deleteProduct(id);
         res.status(200).json({ Success: 'Product deleted successfully' });
