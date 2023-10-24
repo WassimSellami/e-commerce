@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Product, Item } from '../products';
+import { Product, Item } from '../models/products';
 import { Injectable } from '@angular/core';
 import { promise } from 'protractor';
 

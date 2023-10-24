@@ -1,0 +1,68 @@
+<h3>Cart</h3>
+
+<!-- <p>
+  <a routerLink="/shipping">Shipping Prices</a>
+</p> -->
+
+<div *ngIf="items && items.size > 0; else noCartProducts">
+  <div class="box">
+    <div class="cart-item header">
+      <span>Product</span>
+      <span>Unit Price</span>
+      <span>Quantity</span>
+      <span>Total Price</span>
+      <span>Action</span>
+    </div>
+
+    <div class="cart-item" *ngFor="let obj of items | keyvalue">
+      <span>{{ obj.value.product.name }}</span>
+      <span>{{ obj.value.product.price | currency:'EUR' }}</span>
+      <input type="number" [(ngModel)]="obj.value.quantity" (ngModelChange)="onUpdateItemsQuantity()" min="1"
+        [max]="obj.value.product.quantityInStock" />
+      <span>{{ obj.value.product.price * obj.value.quantity! | currency:'EUR' }}</span>
+      <span><button class="button" type="button"
+          (click)="onDelteCartProduct(obj.value.product.id)">Delete</button></span>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="price-item">
+      <span>Items: </span>
+      <span>{{itemsPrice | currency:'EUR'}}</span>
+    </div>
+
+    <div class="price-item">
+      <span> Shipping: </span>
+      <span> {{shippingPrice | currency:'EUR'}}</span>
+    </div>
+
+    <div class="total-price-item">
+      <span> Order Total: </span>
+      <span>{{ totalPrice | currency:'EUR' }}</span>
+    </div>
+  </div>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">
+        Name
+      </label>
+      <input id="name" type="text" formControlName="name">
+    </div>
+
+    <div>
+      <label for="address">
+        Address
+      </label>
+      <input id="address" type="text" formControlName="address">
+    </div>
+    <button class="button" type="submit">Purchase</button>
+  </form>
+</div>
+
+
+<ng-template #noCartProducts>
+  <div>
+    <p>No items in the cart yet.</p>
+  </div>
+</ng-template>
