@@ -13,7 +13,8 @@ import { CartComponent } from './pages/cart/cart.component';
 import { ShippingComponent } from './pages/shipping/shipping.component';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from './utility-components/confirmation-dialog/confirmation-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog'; // Import MatDialogModule
+import { MatDialogModule } from '@angular/material/dialog';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component'; // Import MatDialogModule
 
 
 @NgModule({
@@ -24,10 +25,11 @@ import { MatDialogModule } from '@angular/material/dialog'; // Import MatDialogM
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      { path: '', component: ProductListComponent },
+      { path: 'products', component: ProductListComponent },
       { path: 'products/:productId', component: ProductDetailComponent },
       { path: 'cart', component: CartComponent },
       { path: 'shipping', component: ShippingComponent },
+      { path: 'adminPage', component: AdminPageComponent },
     ])
   ],
   declarations: [
@@ -39,6 +41,7 @@ import { MatDialogModule } from '@angular/material/dialog'; // Import MatDialogM
     CartComponent,
     ShippingComponent,
     ConfirmationDialogComponent,
+    AdminPageComponent,
   ],
   bootstrap: [
     AppComponent

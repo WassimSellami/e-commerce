@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Product } from '../../models/products';
+import { ProductDetailService } from 'src/app/services/product-detail.service';
 
 @Component({
   selector: 'app-product-list',
@@ -10,12 +10,14 @@ import { Product } from '../../models/products';
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private productDetailService: ProductDetailService
+  ) { }
 
   ngOnInit() {
-    this.http.get<Product[]>('http://localhost:4200/api/products').subscribe((data) => {
+    this.productDetailService.getProducts().subscribe((data) => {
       this.products = data;
-    });
+    })
   }
   share() {
     window.alert('The product has been shared!');

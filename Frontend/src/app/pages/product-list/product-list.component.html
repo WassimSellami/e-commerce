@@ -1,26 +1,23 @@
-<h2>Products</h2>
+<div class="products-list">
+  <div *ngFor="let product of products" class="product">
+    <h3>
+      <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
+        {{ product.name }}
+      </a>
+    </h3>
 
-<div *ngFor="let product of products">
+    <h2 *ngIf="product.quantityInStock">
+      {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}
+    </h2>
 
-  <h3>
-    <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
-      {{ product.name }}
-    </a>
-  </h3>
+    <h2 *ngIf="product.price">
+      {{ product.price | currency:'EUR' }}
+    </h2>
+    <button type="button" (click)="share()">
+      Share
+    </button>
 
-  <h2 *ngIf="product.quantityInStock">
-    {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}
-  </h2>
-
-  <h2 *ngIf="product.price">
-    {{ product.price | currency:'EUR' }}
-  </h2>
-
-  <button type="button" (click)="share()">
-    Share
-  </button>
-
-  <app-product-alerts [product]="product" (notify)="onNotify()">
-  </app-product-alerts>
-
+    <app-product-alerts [product]="product" (notify)="onNotify()">
+    </app-product-alerts>
+  </div>
 </div>

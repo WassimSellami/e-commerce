@@ -8,6 +8,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.big-text {
+  text-align: center;
+  font-size: x-large;
+  font-weight: bold;
+}
+
 body {
   margin: 0;
 }
@@ -68,6 +74,22 @@ label {
   margin-bottom: 4px;
   display: block;
   text-transform: uppercase;
+}
+
+/* Product */
+
+.product {
+  border: solid black;
+  border-radius: 5px;
+  border-width: 1px;
+  padding: 10px;
+  margin-top: 20px
+}
+
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(300px, 1fr));
+  grid-gap: 20px;
 }
 
 /* Button */

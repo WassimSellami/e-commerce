@@ -15,4 +15,8 @@ export class ProductDetailService {
   getProductDetails = (productId: any) => {
     return this.http.get<Product[]>(`${this.baseURL}products/${productId}`);
   }
+
+  getProducts = () => {
+    return this.http.get<Product[]>(`${this.baseURL}products`);
+  }
 }
