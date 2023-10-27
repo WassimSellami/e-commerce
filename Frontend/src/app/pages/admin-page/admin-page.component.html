@@ -1,19 +1,10 @@
 <div class="products-list">
     <div *ngFor="let product of products" class="product two-column">
         <div>
-            <h3>
-                <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
-                    {{ product.name }}
-                </a>
-            </h3>
-
-            <h2 *ngIf="product.quantityInStock">
-                {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}
-            </h2>
-
-            <h2 *ngIf="product.price">
-                {{ product.price | currency:'EUR' }}
-            </h2>
+            <h3>{{ product.name }}</h3>
+            <h2>Stock: {{ product.quantityInStock}}</h2>
+            <h2>{{ product.price | currency:'EUR' }}</h2>
+            <h2>{{ product.description }}</h2>
         </div>
         <div>
             <br>

@@ -1,5 +1,9 @@
 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <div>
+        <input formControlName>
+    </div>
+
+    <div>
         <label for="name">Name:</label>
         <input type="text" id="name" formControlName="name" required>
     </div>
@@ -14,10 +18,20 @@
         <textarea id="description" formControlName="description" required></textarea>
     </div>
 
-    <div>
+    <div *ngIf="addMode">
         <label for="quantityInStock">Quantity in Stock:</label>
         <input type="number" id="quantityInStock" formControlName="quantityInStock" required>
     </div>
 
-    <button type="submit" [disabled]="!productForm.valid">Add Product</button>
+    <div *ngIf="editMode">
+        <span for="quantityInStock">Current Stock Quantity: </span>
+        <span>{{product.quantityInStock}} </span>
+        <span for="addedQuantity">Add/Remove: </span>
+        <input type="number" id="addedQuantity" formControlName="addedQuantity" required>
+        <span for="quantityInStock">New Stock Quantity: </span>
+        <span>{{product.quantityInStock + this.productForm.value.addedQuantity}} </span>
+    </div>
+
+    <button type="submit" [disabled]="!productForm.valid"> {{ addMode ? "Add Product" : "Confirm changes" }}
+    </button>
 </form>

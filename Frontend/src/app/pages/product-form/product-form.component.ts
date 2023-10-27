@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, ValidationErrors, AbstractControl, ValidatorFn } from '@angular/forms';
 import { ProductFormService } from 'src/app/services/product-form.service';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductFormConfirmationDialogComponent } from 'src/app/utility-components/product-form-confirmation-dialog/product-form-confirmation-dialog.component';
+import { ConfirmationDialogComponent } from 'src/app/utility-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-product-form',
@@ -14,9 +17,11 @@ export class ProductFormComponent implements OnInit {
   editMode: boolean = false;
   productForm!: FormGroup;
   id: number | undefined;
+  product: any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private productFormService: ProductFormService,
     private productDetailsService: ProductDetailService
@@ -38,12 +43,12 @@ export class ProductFormComponent implements OnInit {
 
   edit = () => {
     this.productDetailsService.getProductDetails(this.id).subscribe((data) => {
-      const product = data;
+      this.product = data;
       this.productForm = this.formBuilder.group({
-        name: [product.name, Validators.required],
-        price: [product.price, Validators.required],
-        description: [product.description, Validators.required],
-        quantityInStock: [product.quantityInStock, Validators.required],
+        name: [this.product.name, Validators.required],
+        price: [this.product.price, Validators.required],
+        description: [this.product.description, Validators.required],
+        addedQuantity: [0, Validators.required],
       });
     });
   }
@@ -58,14 +63,25 @@ export class ProductFormComponent implements OnInit {
   }
 
   onSubmit = () => {
+
     const formValue = this.productForm.value;
     const details = {
       "id": this.id,
       "price": formValue.price,
       "name": formValue.name,
       "description": formValue.description,
-      "quantityInStock": formValue.quantityInStock
+      "quantityInStock": this.addMode ? formValue.quantityInStock : this.product.quantityInStock + formValue.addedQuantity
     };
+    const dialogRef = this.dialog.open(ProductFormConfirmationDialogComponent, {
+      data: details
+    }); dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.confirmSubmission(details);
+      }
+    });
+  }
+
+  confirmSubmission = (details: any) => {
     if (this.addMode) {
       this.productFormService.addProduct(details).subscribe(
         (response) => {
@@ -81,6 +97,7 @@ export class ProductFormComponent implements OnInit {
       this.productFormService.editProduct(details).subscribe(
         (response) => {
           window.alert('Product updated successfully !')
+          this.router.navigate(['/adminPage']);
         },
         (error) => {
           window.alert('Product not updated: ' + error);

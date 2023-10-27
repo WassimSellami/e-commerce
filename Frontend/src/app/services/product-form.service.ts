@@ -17,7 +17,6 @@ export class ProductFormService {
   }
 
   editProduct = (details: any) => {
-    window.alert("editing");
     const url = `${this.baseURL}products/update`;
     return this.http.put(url, { "details": details });
   }

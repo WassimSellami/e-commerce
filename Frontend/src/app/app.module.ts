@@ -15,7 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from './utility-components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
-import { ProductFormComponent } from './pages/product-form/product-form.component'; // Import MatDialogModule
+import { ProductFormComponent } from './pages/product-form/product-form.component';
+import { ProductFormConfirmationDialogComponent } from './utility-components/product-form-confirmation-dialog/product-form-confirmation-dialog.component'; // Import MatDialogModule
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { ProductFormComponent } from './pages/product-form/product-form.componen
     ConfirmationDialogComponent,
     AdminPageComponent,
     ProductFormComponent,
+    ProductFormConfirmationDialogComponent,
   ],
   bootstrap: [
     AppComponent
