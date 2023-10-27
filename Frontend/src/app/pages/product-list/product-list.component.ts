@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/products';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -11,7 +12,8 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
 
   constructor(
-    private productDetailService: ProductDetailService
+    private productDetailService: ProductDetailService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -19,8 +21,8 @@ export class ProductListComponent implements OnInit {
       this.products = data;
     })
   }
-  share() {
-    window.alert('The product has been shared!');
+  viewProductDetails(id: number) {
+    this.router.navigate(['/products', id]);
   }
 
   onNotify() {

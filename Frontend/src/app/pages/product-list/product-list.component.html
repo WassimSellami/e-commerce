@@ -13,11 +13,11 @@
     <h2 *ngIf="product.price">
       {{ product.price | currency:'EUR' }}
     </h2>
-    <button type="button" (click)="share()">
-      Share
+    <button type="button" (click)="viewProductDetails(product.id)">
+      View Details
     </button>
 
-    <app-product-alerts [product]="product" (notify)="onNotify()">
+    <app-product-alerts [product]=" product" (notify)="onNotify()">
     </app-product-alerts>
   </div>
 </div>
