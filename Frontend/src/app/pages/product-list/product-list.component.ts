@@ -24,8 +24,4 @@ export class ProductListComponent implements OnInit {
   viewProductDetails(id: number) {
     this.router.navigate(['/products', id]);
   }
-
-  onNotify() {
-    window.alert('You will be notified when the product goes on sale');
-  }
 }

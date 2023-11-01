@@ -3,6 +3,8 @@ import { Product } from '../../models/products';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
 import { AdminPageService } from 'src/app/services/admin-page.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from 'src/app/utility-components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'app-admin-page',
@@ -15,7 +17,8 @@ export class AdminPageComponent implements OnInit {
   constructor(
     private productDetailService: ProductDetailService,
     private adminPageService: AdminPageService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -33,13 +36,28 @@ export class AdminPageComponent implements OnInit {
   }
 
   deleteProduct = (id: number) => {
+    const details = "";
+    const index = this.products.findIndex(product => product.id === id);
+    if (index !== -1) {
+      const details = {
+        "name": this.products[index].name,
+        "description": this.products[index].description
+      }
+      const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+        data: details
+      }); dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.confirmDeletion(id, index);
+        }
+      });
+    }
+  }
+
+  confirmDeletion = (id: number, index: number) => {
     this.adminPageService.deleteProduct(id).subscribe(
       (response) => {
+        this.products.splice(index, 1);
         window.alert("Product deleted successfully!");
-        const index = this.products.findIndex(product => product.id === id);
-        if (index !== -1) {
-          this.products.splice(index, 1);
-        }
       },
       (error) => {
         window.alert("Please Try again: " + error);
