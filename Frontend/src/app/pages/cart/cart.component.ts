@@ -1,8 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
-import { Product, Item } from '../../models/products';
-import { FormsModule } from '@angular/forms';
+import { Item } from '../../models/products';
+import { MatDialog } from '@angular/material/dialog';
+import { OrderConfirmationDialogComponent } from 'src/app/utility-components/order-confirmation-dialog/order-confirmation-dialog.component';
+
 
 @Component({
   selector: 'app-cart',
@@ -22,6 +24,7 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder,
   ) { }
 
@@ -57,6 +60,21 @@ export class CartComponent implements OnInit {
         "productsData": itemQuantityArray
       }
     }
+    const details = {
+      "price": this.totalPrice,
+      "name": this.checkoutForm.value.name,
+      "address": this.checkoutForm.value.address,
+    }
+    const dialogRef = this.dialog.open(OrderConfirmationDialogComponent, {
+      data: details
+    }); dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.confirmOrder(details);
+      }
+    });
+  }
+
+  confirmOrder = (orderDetails: any) => {
     this.updateStockQuantities();
 
     this.cartService.createOrder(orderDetails).subscribe(
@@ -72,7 +90,6 @@ export class CartComponent implements OnInit {
       }
     );
   }
-
   updateStockQuantities(): void {
     const leftQuantitits = Array.from(this.items, ([id, item]) => ({ id, newQuantity: this.items.get(id)?.product.quantityInStock! - item.quantity }));
     this.cartService.updateQuantityInStock(leftQuantitits).subscribe(

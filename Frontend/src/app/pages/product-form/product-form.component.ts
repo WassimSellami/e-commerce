@@ -4,7 +4,6 @@ import { FormGroup, FormBuilder, Validators, ValidationErrors, AbstractControl, 
 import { ProductFormService } from 'src/app/services/product-form.service';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductFormConfirmationDialogComponent } from 'src/app/utility-components/product-form-confirmation-dialog/product-form-confirmation-dialog.component';
 import { ConfirmationDialogComponent } from 'src/app/utility-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -65,17 +64,29 @@ export class ProductFormComponent implements OnInit {
   onSubmit = () => {
 
     const formValue = this.productForm.value;
-    const details = {
-      "id": this.id,
-      "price": formValue.price,
-      "name": formValue.name,
-      "description": formValue.description,
-      "quantityInStock": this.addMode ? formValue.quantityInStock : this.product.quantityInStock + formValue.addedQuantity
+    const dialogData = {
+      title: "Please verify product details before submission:",
+      id: this.id,
+      confirmText: "Confirm",
+      cancelText: "Cancel",
+      fields: {
+        Price: formValue.price,
+        Name: formValue.name,
+        Description: formValue.description,
+        Quantity: this.addMode ? formValue.quantityInStock : this.product.quantityInStock + formValue.addedQuantity
+      }
     };
-    const dialogRef = this.dialog.open(ProductFormConfirmationDialogComponent, {
-      data: details
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: dialogData
     }); dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        const details = {
+          "id": this.id,
+          "price": formValue.price,
+          "name": formValue.name,
+          "description": formValue.description,
+          "quantity": this.addMode ? formValue.quantityInStock : this.product.quantityInStock + formValue.addedQuantity
+        };
         this.confirmSubmission(details);
       }
     });

@@ -36,7 +36,16 @@ export class ProductDetailComponent implements OnInit {
     this.canAddToCart = false;
     this.cartService.updateItem(this.product, this.quantity);
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: { product: this.product, quantity: this.quantity },
+      data: {
+        fields: {
+          Name: this.product.name,
+          Quantity: this.quantity,
+          Price: this.product.price * this.quantity
+        },
+        title: "Product addded successfully !",
+        confirmText: "Go to checkout",
+        cancelText: "Continue shopping",
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

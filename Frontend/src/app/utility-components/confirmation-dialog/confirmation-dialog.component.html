@@ -1,10 +1,10 @@
-<h2 mat-dialog-title>Product addded successfully !</h2>
+<h2 mat-dialog-title>{{data.title}}</h2>
 <mat-dialog-content>
-    <p>{{ data.product.name }}</p>
-    <p>Quantity: {{ data.quantity }}</p>
-    <p>{{ data.product.price * data.quantity | currency:'EUR'}}</p>
+    <ng-container *ngFor="let field of data.fields | keyvalue">
+        <p>{{ field.key }}: {{ field.value }}</p>
+    </ng-container>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button color="primary" [mat-dialog-close]="true">Go to Checkout</button>
-    <button mat-button color="warn" [mat-dialog-close]="false">Continue Shopping</button>
+    <button mat-button color="primary" [mat-dialog-close]="true">{{data.confirmText}}</button>
+    <button mat-button color="warn" [mat-dialog-close]="false">{{data.cancelText}}</button>
 </mat-dialog-actions>

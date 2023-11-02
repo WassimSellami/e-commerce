@@ -4,7 +4,7 @@ import { ProductDetailService } from 'src/app/services/product-detail.service';
 import { AdminPageService } from 'src/app/services/admin-page.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteConfirmationDialogComponent } from 'src/app/utility-components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { ConfirmationDialogComponent } from 'src/app/utility-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-admin-page',
@@ -36,15 +36,19 @@ export class AdminPageComponent implements OnInit {
   }
 
   deleteProduct = (id: number) => {
-    const details = "";
     const index = this.products.findIndex(product => product.id === id);
     if (index !== -1) {
-      const details = {
-        "name": this.products[index].name,
-        "description": this.products[index].description
+      const data = {
+        fields: {
+          Name: this.products[index].name,
+          Description: this.products[index].description,
+        },
+        title: "Are you sure you want to  delete this product ?",
+        confirmText: "Delete",
+        cancelText: "Cancel",
       }
-      const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
-        data: details
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        data: data
       }); dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.confirmDeletion(id, index);
@@ -64,6 +68,4 @@ export class AdminPageComponent implements OnInit {
       }
     );
   }
-
-
 }

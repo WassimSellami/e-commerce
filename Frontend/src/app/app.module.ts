@@ -7,7 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './utility-components/top-bar/top-bar.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
-import { ProductAlertsComponent } from './utility-components/product-alerts/product-alerts.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { ShippingComponent } from './pages/shipping/shipping.component';
@@ -17,7 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { ProductFormComponent } from './pages/product-form/product-form.component';
 import { ProductFormConfirmationDialogComponent } from './utility-components/product-form-confirmation-dialog/product-form-confirmation-dialog.component';
-import { DeleteConfirmationDialogComponent } from './utility-components/delete-confirmation-dialog/delete-confirmation-dialog.component'; // Import MatDialogModule
+import { OrderConfirmationDialogComponent } from './utility-components/order-confirmation-dialog/order-confirmation-dialog.component'; // Import MatDialogModule
 
 
 @NgModule({
@@ -40,7 +39,6 @@ import { DeleteConfirmationDialogComponent } from './utility-components/delete-c
     AppComponent,
     TopBarComponent,
     ProductListComponent,
-    ProductAlertsComponent,
     ProductDetailComponent,
     CartComponent,
     ShippingComponent,
@@ -48,7 +46,7 @@ import { DeleteConfirmationDialogComponent } from './utility-components/delete-c
     AdminPageComponent,
     ProductFormComponent,
     ProductFormConfirmationDialogComponent,
-    DeleteConfirmationDialogComponent,
+    OrderConfirmationDialogComponent,
   ],
   bootstrap: [
     AppComponent

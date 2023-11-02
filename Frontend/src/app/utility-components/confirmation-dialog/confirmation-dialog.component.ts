@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Product } from '../../models/products';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -9,6 +8,6 @@ import { Product } from '../../models/products';
 })
 export class ConfirmationDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { product: Product, quantity: number }
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 }
