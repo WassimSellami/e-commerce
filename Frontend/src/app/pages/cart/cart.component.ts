@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { Item } from '../../models/products';
 import { MatDialog } from '@angular/material/dialog';
-import { OrderConfirmationDialogComponent } from 'src/app/utility-components/order-confirmation-dialog/order-confirmation-dialog.component';
+import { ConfirmationDialogComponent } from 'src/app/utility-components/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -51,8 +51,34 @@ export class CartComponent implements OnInit {
   }
 
   onSubmit(): void {
+
+    const dialogDetails = this.prepareDialogData();
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: dialogDetails
+    }); dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const queryData = this.prepareQueryData();
+        this.confirmOrder(queryData);
+      }
+    });
+  }
+
+  prepareDialogData = () => {
+    return {
+      title: "Are you sure you want to confirm this order ?",
+      confirmText: "Confirm",
+      cancelText: "Cancel",
+      fields: {
+        Price: this.totalPrice,
+        Name: this.checkoutForm.value.name,
+        Address: this.checkoutForm.value.address,
+      }
+    };
+  }
+
+  prepareQueryData = () => {
     const itemQuantityArray = Array.from(this.items, ([id, item]) => ({ id, quantity: item.quantity }));
-    const orderDetails = {
+    return {
       "orderDetails": {
         "price": this.totalPrice,
         "name": this.checkoutForm.value.name,
@@ -60,18 +86,6 @@ export class CartComponent implements OnInit {
         "productsData": itemQuantityArray
       }
     }
-    const details = {
-      "price": this.totalPrice,
-      "name": this.checkoutForm.value.name,
-      "address": this.checkoutForm.value.address,
-    }
-    const dialogRef = this.dialog.open(OrderConfirmationDialogComponent, {
-      data: details
-    }); dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.confirmOrder(details);
-      }
-    });
   }
 
   confirmOrder = (orderDetails: any) => {
