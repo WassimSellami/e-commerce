@@ -62,9 +62,20 @@ export class ProductFormComponent implements OnInit {
   }
 
   onSubmit = () => {
+    const dialogData = this.prepareDialogData();
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: dialogData
+    }); dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const details = this.prepareQueryData(dialogData);
+        this.confirmSubmission(details);
+      }
+    });
+  }
 
+  prepareDialogData = () => {
     const formValue = this.productForm.value;
-    const dialogData = {
+    return {
       title: "Please verify product details before submission:",
       id: this.id,
       confirmText: "Confirm",
@@ -76,20 +87,17 @@ export class ProductFormComponent implements OnInit {
         Quantity: this.addMode ? formValue.quantityInStock : this.product.quantityInStock + formValue.addedQuantity
       }
     };
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: dialogData
-    }); dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const details = {
-          "id": this.id,
-          "price": formValue.price,
-          "name": formValue.name,
-          "description": formValue.description,
-          "quantity": this.addMode ? formValue.quantityInStock : this.product.quantityInStock + formValue.addedQuantity
-        };
-        this.confirmSubmission(details);
-      }
-    });
+  }
+
+  prepareQueryData = (dialogData: any) => {
+    const formValue = this.productForm.value;
+    return {
+      "id": this.id,
+      "price": dialogData.fields.Price,
+      "name": dialogData.fields.Name,
+      "description": dialogData.fields.Description,
+      "quantityInStock": dialogData.fields.Quantity
+    };
   }
 
   confirmSubmission = (details: any) => {
