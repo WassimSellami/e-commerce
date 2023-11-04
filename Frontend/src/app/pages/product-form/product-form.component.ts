@@ -15,7 +15,7 @@ export class ProductFormComponent implements OnInit {
   addMode: boolean = false;
   editMode: boolean = false;
   productForm!: FormGroup;
-  id: number | undefined;
+  id: number = 0;
   product: any;
   constructor(
     private route: ActivatedRoute,
@@ -77,7 +77,6 @@ export class ProductFormComponent implements OnInit {
     const formValue = this.productForm.value;
     return {
       title: "Please verify product details before submission:",
-      id: this.id,
       confirmText: "Confirm",
       cancelText: "Cancel",
       fields: {
@@ -92,7 +91,6 @@ export class ProductFormComponent implements OnInit {
   prepareQueryData = (dialogData: any) => {
     const formValue = this.productForm.value;
     return {
-      "id": this.id,
       "price": dialogData.fields.Price,
       "name": dialogData.fields.Name,
       "description": dialogData.fields.Description,
@@ -108,12 +106,13 @@ export class ProductFormComponent implements OnInit {
           this.router.navigate(['/adminPage']);
         },
         (error) => {
+          console.log(error);
           window.alert('Product not added: ' + error);
         }
       );
     }
     else {
-      this.productFormService.editProduct(details).subscribe(
+      this.productFormService.editProduct(this.id, details).subscribe(
         (response) => {
           window.alert('Product updated successfully !')
           this.router.navigate(['/adminPage']);

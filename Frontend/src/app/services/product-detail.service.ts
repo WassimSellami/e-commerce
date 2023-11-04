@@ -6,17 +6,17 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ProductDetailService {
-  baseURL = 'http://localhost:4200/api/';
+  baseURL = 'http://localhost:4200/api/products/';
 
   constructor(
     private http: HttpClient
   ) { }
 
   getProductDetails = (productId: any) => {
-    return this.http.get<Product>(`${this.baseURL}products/${productId}`);
+    return this.http.get<Product>(`${this.baseURL}${productId}`);
   }
 
   getProducts = () => {
-    return this.http.get<Product[]>(`${this.baseURL}products`);
+    return this.http.get<Product[]>(this.baseURL);
   }
 }

@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/create', async (req, res) => {
+router.post('/', async (req, res) => {
     const { orderDetails } = req.body;
     var message
     try {

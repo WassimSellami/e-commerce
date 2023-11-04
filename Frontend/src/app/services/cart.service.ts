@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Product, Item } from '../models/products';
 import { Injectable } from '@angular/core';
-import { promise } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -83,12 +82,12 @@ export class CartService {
   }
 
   createOrder = (orderDetails: any) => {
-    const url = `${this.baseURL}orders/create`;
+    const url = `${this.baseURL}orders`;
     return this.http.post(url, orderDetails);
   }
 
-  updateQuantityInStock = (leftQuantitits: { id: number; newQuantity: number; }[]) => {
-    const url = `${this.baseURL}products/updateQuantity`;
-    return this.http.patch(url, { "leftQuantitits": leftQuantitits });
+  updateStockQuantities = (leftQuantities: { id: number; newQuantity: number; }[]) => {
+    const url = `${this.baseURL}products/quantity`;
+    return this.http.patch(url, { "leftQuantities": leftQuantities });
   }
 }

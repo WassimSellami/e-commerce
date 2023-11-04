@@ -33,9 +33,9 @@ async function createProducts() {
     await sequelize.models.Product.create({ name: 'Helmet', description: "This is a Helmet", price: 50, quantityInStock: 100 });
 }
 
-async function updateStockQuantities(leftQuantitits) {
+async function updateStockQuantities(leftQuantities) {
     try {
-        leftQuantitits.map(async item => {
+        leftQuantities.map(async item => {
             const product = await getProductById(item.id)
             if (!product) {
                 throw new Error(`Product with ID ${item.id} not found.`);
@@ -51,7 +51,6 @@ async function updateStockQuantities(leftQuantitits) {
 async function createOrder(details) {
     const productsWithQuantity = await Promise.all(details.productsData.map(async ({ id, quantity }) => {
         const product = await getProductById(id);
-        console.log({ product, quantity });
         return { product, quantity }
     }));
 
@@ -76,8 +75,8 @@ async function createProduct(details) {
     });
 }
 
-async function updateProduct(details) {
-    const product = await sequelize.models.Product.findByPk(details.id);
+async function updateProduct(id, details) {
+    const product = await sequelize.models.Product.findByPk(id);
     if (product) {
         await product.update({
             price: details.price,

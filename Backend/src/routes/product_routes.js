@@ -15,8 +15,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:productId', async (req, res) => {
-    const productId = req.params.productId;
+router.get('/:id', async (req, res) => {
+    const productId = req.params.id;
     try {
         const product = await getProductById(productId);
         if (product) {
@@ -29,17 +29,17 @@ router.get('/:productId', async (req, res) => {
     }
 });
 
-router.patch('/updateQuantity', async (req, res) => {
-    const { leftQuantitits } = req.body;
-    console.log(leftQuantitits);
+router.patch('/quantity', async (req, res) => {
+    const { leftQuantities } = req.body;
+    console.log(leftQuantities);
     try {
-        await updateStockQuantities(leftQuantitits);
+        await updateStockQuantities(leftQuantities);
         res.status(200).json({ Success: 'Quantity updated successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
-router.post('/create', async (req, res) => {
+router.post('/', async (req, res) => {
     const { details } = req.body;
     try {
         await createProduct(details);
@@ -49,18 +49,19 @@ router.post('/create', async (req, res) => {
     }
 })
 
-router.put('/update', async (req, res) => {
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
     const { details } = req.body;
     try {
-        await updateProduct(details);
+        await updateProduct(id, details);
         res.status(200).json({ Success: 'Product updated successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 
-router.delete('/delete', async (req, res) => {
-    const id = req.query.id;
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
     try {
         await deleteProduct(id);
         res.status(200).json({ Success: 'Product deleted successfully' });

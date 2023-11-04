@@ -11,7 +11,7 @@ export class AdminPageService {
   ) { }
 
   deleteProduct(id: number) {
-    const url = `${this.baseURL}products/delete?id=${id}`
+    const url = `${this.baseURL}products/${id}`
     return this.http.delete(url);
   }
 } 

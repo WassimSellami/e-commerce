@@ -105,12 +105,12 @@ export class CartComponent implements OnInit {
     );
   }
   updateStockQuantities(): void {
-    const leftQuantitits = Array.from(this.items, ([id, item]) => ({ id, newQuantity: this.items.get(id)?.product.quantityInStock! - item.quantity }));
-    this.cartService.updateQuantityInStock(leftQuantitits).subscribe(
+    const leftQuantities = Array.from(this.items, ([id, item]) => ({ id, newQuantity: this.items.get(id)?.product.quantityInStock! - item.quantity }));
+    this.cartService.updateStockQuantities(leftQuantities).subscribe(
       (response) => {
       },
       (error) => {
-        console.error('Internal Server Error: Order Not Created', error);
+        console.error('Internal Server Error: Quantity not updated', error);
       }
     );
   }

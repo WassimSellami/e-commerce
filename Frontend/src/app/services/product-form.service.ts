@@ -5,19 +5,18 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ProductFormService {
-  baseURL = 'http://localhost:4200/api/';
+  baseURL = 'http://localhost:4200/api/products/';
 
   constructor(
     private http: HttpClient
   ) { }
 
   addProduct = (details: any) => {
-    const url = `${this.baseURL}products/create`;
-    return this.http.post(url, { "details": details });
+    return this.http.post(this.baseURL, { "details": details });
   }
 
-  editProduct = (details: any) => {
-    const url = `${this.baseURL}products/update`;
+  editProduct = (id: number, details: any) => {
+    const url = `${this.baseURL}${id}`
     return this.http.put(url, { "details": details });
   }
 }
