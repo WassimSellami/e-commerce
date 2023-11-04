@@ -1,4 +1,4 @@
-import { sequelize } from './db_setup.js';
+import { sequelize } from './db_connect.js';
 
 async function getAllProducts() {
     try {
@@ -9,7 +9,7 @@ async function getAllProducts() {
     }
 }
 
-async function getAllOffers() {
+async function getAllOrders() {
     try {
         const offers = await sequelize.models.Order.findAll();
         return offers;
@@ -101,4 +101,4 @@ async function deleteProduct(id) {
     }
 }
 
-export { getAllProducts, getProductById, createOrder, createProducts, getAllOffers, updateStockQuantities, createProduct, updateProduct, deleteProduct };
+export { getAllProducts, getProductById, createOrder, createProducts, getAllOrders, updateStockQuantities, createProduct, updateProduct, deleteProduct };

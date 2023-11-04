@@ -1,14 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import { createOrder, getAllOffers } from '../db/db_queries.js';
+import { createOrder, getAllOrders } from '../db/db_queries.js';
 
 const router = express.Router();
 router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
     try {
-        const offers = await getAllOffers();
+        const offers = await getAllOrders();
         res.json(offers);
     }
     catch (error) {

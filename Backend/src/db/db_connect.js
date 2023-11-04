@@ -7,9 +7,7 @@ const sequelize = new Sequelize({
     database: 'e_commerce_db',
     port: 3307,
 });
-
 async function setupDB() {
-    // Define your models
     const Product = sequelize.define('Product', {
         name: {
             type: DataTypes.STRING,
@@ -53,13 +51,11 @@ async function setupDB() {
             defaultValue: 1,
         },
     });
-
     Order.belongsToMany(Product, { through: OrderProduct });
     Product.belongsToMany(Order, { through: OrderProduct });
 }
 
 setupDB();
-
 sequelize.sync({ force: false })
     .then(() => {
         console.log('Connected to and synchronized with MySQL database!');
@@ -69,5 +65,3 @@ sequelize.sync({ force: false })
     });
 
 export { sequelize };
-
-
