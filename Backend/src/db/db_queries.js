@@ -18,12 +18,13 @@ async function getAllOrders() {
     }
 }
 
-async function getProductById(productId) {
-    try {
-        const product = await sequelize.models.Product.findByPk(productId);
-        return product;
-    } catch (error) {
-        throw error;
+async function getProductById(id) {
+    const product = await sequelize.models.Product.findByPk(id);
+    if (product) {
+        return product
+    }
+    else {
+        throw new Error(`Product with ID: ${id} was not found.`);
     }
 }
 
@@ -34,18 +35,15 @@ async function createProducts() {
 }
 
 async function updateStockQuantities(leftQuantities) {
-    try {
-        leftQuantities.map(async item => {
-            const product = await getProductById(item.id)
-            if (!product) {
-                throw new Error(`Product with ID ${item.id} not found.`);
-            }
+    const promises = leftQuantities.map(async item => {
+        try {
+            const product = await getProductById(item.id);
             await product.update({ quantityInStock: item.newQuantity });
-        });
-
-    } catch (error) {
-        throw error;
-    }
+        } catch (error) {
+            throw error;
+        }
+    });
+    await Promise.all(promises);
 }
 
 async function createOrder(details) {
@@ -67,7 +65,7 @@ async function createOrder(details) {
 }
 
 async function createProduct(details) {
-    const product = await sequelize.models.Product.create({
+    await sequelize.models.Product.create({
         price: details.price,
         name: details.name,
         description: details.description,
@@ -86,7 +84,7 @@ async function updateProduct(id, details) {
         });
     }
     else {
-        throw new Error(`Product with ID ${id} not found.`);
+        throw new Error(`Product with ID: ${id} not found.`);
     }
 }
 
@@ -96,7 +94,7 @@ async function deleteProduct(id) {
         await product.destroy();
     }
     else {
-        throw new Error(`Product with ID ${id} not found.`);
+        throw new Error(`Product with ID: ${id} not found.`);
     }
 }
 
