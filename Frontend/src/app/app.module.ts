@@ -15,6 +15,7 @@ import { ConfirmationDialogComponent } from './utility-components/confirmation-d
 import { MatDialogModule } from '@angular/material/dialog';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { ProductFormComponent } from './pages/product-form/product-form.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ProductFormComponent } from './pages/product-form/product-form.componen
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
     RouterModule.forRoot([
       { path: 'products', component: ProductListComponent },
       { path: 'products/:id', component: ProductDetailComponent },

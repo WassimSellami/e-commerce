@@ -1,5 +1,11 @@
-<app-top-bar></app-top-bar>
+<app-top-bar (emitter)="send($event)"></app-top-bar>
 
-<div class="container">
-  <router-outlet></router-outlet>
+<div class="container" *ngIf="isProductListRoute; else otherContent">
+  <app-product-list [searchKeywords]="searchKeywords"></app-product-list>
 </div>
+
+<ng-template #otherContent>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>

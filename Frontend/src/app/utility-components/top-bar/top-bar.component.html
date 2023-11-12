@@ -6,6 +6,11 @@
   <h1>Manage Store</h1>
 </a>
 
+<div *ngIf="showSearchDiv">
+  <input type="text" placeholder="Search Products" (keydown.enter)="emit(keywords.value);" #keywords />
+  <button (click)="emit(keywords.value);">Search</button>
+</div>
+
 <a routerLink="/cart" class="button fancy-button">
   <em class="material-icons">shopping_cart</em>Checkout
 </a>

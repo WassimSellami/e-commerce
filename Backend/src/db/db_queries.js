@@ -29,9 +29,10 @@ async function getProductById(id) {
 }
 
 async function createProducts() {
-    await sequelize.models.Product.create({ name: 'Book', description: "This is a book", price: 10, quantityInStock: 1 });
-    await sequelize.models.Product.create({ name: 'Phone', description: "This is a phone", price: 150, quantityInStock: 100 });
-    await sequelize.models.Product.create({ name: 'Helmet', description: "This is a Helmet", price: 50, quantityInStock: 100 });
+    await sequelize.models.Product.create({ name: 'Book', description: "This is a book", price: 10, quantityInStock: 1, brand: "Lenovo" });
+    await sequelize.models.Product.create({ name: 'Phone', description: "This is a phone", price: 150, quantityInStock: 100, brand: "Samsung" });
+    await sequelize.models.Product.create({ name: 'Helmet', description: "This is a Helmet", price: 50, quantityInStock: 100, brand: "Decathlon" });
+    await sequelize.models.Product.create({ name: 'Ball', description: "This is Ali's ball", price: 60, quantityInStock: 100, brand: "Decathlon" });
 }
 
 async function updateStockQuantities(leftQuantities) {
@@ -69,6 +70,7 @@ async function createProduct(details) {
         price: details.price,
         name: details.name,
         description: details.description,
+        brand: details.brand,
         quantityInStock: details.quantityInStock
     });
 }
@@ -80,6 +82,7 @@ async function updateProduct(id, details) {
             price: details.price,
             name: details.name,
             description: details.description,
+            brand: details.brand,
             quantityInStock: details.quantityInStock
         });
     }

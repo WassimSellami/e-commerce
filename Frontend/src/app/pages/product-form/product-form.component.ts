@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, ValidationErrors, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductFormService } from 'src/app/services/product-form.service';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -47,6 +47,7 @@ export class ProductFormComponent implements OnInit {
         name: [this.product.name, Validators.required],
         price: [this.product.price, Validators.required],
         description: [this.product.description, Validators.required],
+        brand: [this.product.brand, Validators.required],
         addedQuantity: [0, Validators.required],
       });
     });
@@ -57,6 +58,7 @@ export class ProductFormComponent implements OnInit {
       name: ['', Validators.required],
       price: ['', Validators.required],
       description: ['', Validators.required],
+      brand: ['', Validators.required],
       quantityInStock: ['', Validators.required],
     });
   }
@@ -83,6 +85,7 @@ export class ProductFormComponent implements OnInit {
         Price: formValue.price,
         Name: formValue.name,
         Description: formValue.description,
+        Brand: formValue.description,
         Quantity: this.addMode ? formValue.quantityInStock : this.product.quantityInStock + formValue.addedQuantity
       }
     };
@@ -94,6 +97,7 @@ export class ProductFormComponent implements OnInit {
       "price": dialogData.fields.Price,
       "name": dialogData.fields.Name,
       "description": dialogData.fields.Description,
+      "brand": dialogData.fields.Brand,
       "quantityInStock": dialogData.fields.Quantity
     };
   }

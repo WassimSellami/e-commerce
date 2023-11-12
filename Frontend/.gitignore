@@ -1,3 +1,6 @@
+# Angular specific
+.angular/
+
 .DS_STORE
 
 /dist/
