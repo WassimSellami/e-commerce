@@ -7,16 +7,9 @@ import { filter } from 'rxjs/operators';
   templateUrl: './top-bar.component.html',
   styleUrls: ['./top-bar.component.css']
 })
-export class TopBarComponent implements OnInit {
+export class TopBarComponent {
   showSearchDiv: boolean = false;
   constructor(private router: Router) { }
-
-  ngOnInit() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.checkRoute();
-      });
-  }
 
   @Output() emitter: EventEmitter<string>
     = new EventEmitter<string>();
@@ -25,7 +18,16 @@ export class TopBarComponent implements OnInit {
     this.emitter.emit(searchKeywords);
   }
 
-  private checkRoute() {
-    this.showSearchDiv = this.router.url === '/products';
+  goToProductsPage = (keywords: any) => {
+    if (this.isProductsRoute()) {
+      this.emit(keywords);
+    }
+    else {
+      this.router.navigate(['/products', { "k": keywords }]);
+    }
+  }
+
+  private isProductsRoute() {
+    return this.router.url === '/products';
   }
 }

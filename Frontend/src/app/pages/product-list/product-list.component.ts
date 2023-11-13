@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Product } from '../../models/products';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -17,9 +17,10 @@ export class ProductListComponent implements OnInit {
   selectedFilters: { [key: string]: Set<number> } = {};
   constructor(
     private productDetailService: ProductDetailService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
-  @Input() searchKeywords: String | undefined;
+  @Input() searchKeywords: String = '';
 
   ngOnInit() {
     this.productDetailService.getProducts().subscribe((data) => {
@@ -27,12 +28,20 @@ export class ProductListComponent implements OnInit {
       this.products = this.allProducts;
       this.searchedProducts = this.allProducts;
       this.initFilters();
+      this.route.params.subscribe(params => {
+        if (params['k'] && params['k'] != '') {
+          this.searchProducts(params['k']);
+        }
+      })
     })
+
   }
 
+
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['searchKeywords'] && changes['searchKeywords'].currentValue !== changes['searchKeywords'].previousValue) {
-      this.searchProducts();
+    if (changes['searchKeywords'] && changes['searchKeywords'].currentValue != '' && changes['searchKeywords'].currentValue !== changes['searchKeywords'].previousValue) {
+      this.searchProducts(this.searchKeywords);
     }
   }
 
@@ -83,9 +92,8 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/products', id]);
   }
 
-  searchProducts() {
-    if (!this.searchKeywords) return;
-    const searchTermUpperList = this.searchKeywords.trim().split(/\s+/).map(searchTerm => searchTerm.toUpperCase().trim());
+  searchProducts(searchKeywords: String) {
+    const searchTermUpperList = searchKeywords.trim().split(/\s+/).map(searchTerm => searchTerm.toUpperCase().trim());
     this.searchedProducts = this.allProducts.filter(item =>
       searchTermUpperList.some(searchTerm =>
         item.name.toUpperCase().includes(searchTerm) || (item.description.toUpperCase().includes(searchTerm)) || (item.brand.toUpperCase().includes(searchTerm))

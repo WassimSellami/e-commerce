@@ -35,26 +35,14 @@
 </div>
 
 <div class="products-list">
-  <div *ngFor="let product of products" class="product">
+  <div *ngFor="let product of products" class="product" (click)="viewProductDetails(product.id)">
     <h3>
       <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
         {{ product.name }}
       </a>
     </h3>
-
-    <h2 *ngIf="product.quantityInStock">
-      {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}
-    </h2>
-
-    <h2 *ngIf="product.price">
-      {{ product.price | currency:'EUR' }}
-    </h2>
-
-    <h2 *ngIf="product.brand">
-      {{ product.brand }}
-    </h2>
-    <button type="button" (click)="viewProductDetails(product.id)">
-      View Details
-    </button>
+    <h2> {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}</h2>
+    <h2> {{ product.price | currency:'EUR' }}</h2>
+    <h2> {{ product.brand }}</h2>
   </div>
 </div>

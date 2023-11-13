@@ -87,7 +87,11 @@ label {
   border-radius: 5px;
   border-width: 1px;
   padding: 10px;
-  margin-top: 20px
+  margin-top: 20px;
+}
+
+.product :hover {
+  cursor: pointer;
 }
 
 .products-list {
@@ -193,5 +197,13 @@ app-top-bar h1 {
 .cart-item.header {
   font-weight: bold;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
