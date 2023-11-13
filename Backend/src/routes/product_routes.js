@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getAllProducts, getProductById, updateStockQuantities, createProduct, updateProduct, deleteProduct } from '../db/db_queries.js';
+import { getAllProducts, getProductById, updateStockQuantities, createProduct, updateProduct, deleteProduct, getAllCategories } from '../db/db_queries.js';
 
 const router = express.Router();
 
@@ -10,6 +10,16 @@ router.get('/', async (req, res) => {
     try {
         const products = await getAllProducts();
         res.status(200).json(products);
+    }
+    catch (error) {
+        res.status(500).json({ Error: 'Internal Server Error' });
+    }
+});
+
+router.get('/categories', async (req, res) => {
+    try {
+        const categories = await getAllCategories();
+        res.status(200).json(categories);
     }
     catch (error) {
         res.status(500).json({ Error: 'Internal Server Error' });

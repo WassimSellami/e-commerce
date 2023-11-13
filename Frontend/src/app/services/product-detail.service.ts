@@ -19,4 +19,8 @@ export class ProductDetailService {
   getProducts = () => {
     return this.http.get<Product[]>(this.baseURL);
   }
+
+  getCategories = () => {
+    return this.http.get<String[]>(`${this.baseURL}categories`)
+  }
 }

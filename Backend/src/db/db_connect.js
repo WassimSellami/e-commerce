@@ -29,6 +29,10 @@ async function setupDB() {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        category: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        }
     });
 
     const Order = sequelize.define('Order', {

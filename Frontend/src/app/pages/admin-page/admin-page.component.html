@@ -1,4 +1,8 @@
+<button class="product big-text" type="button" (click)="addProduct()">
+    Add Product
+</button>
 <div class="products-list">
+
     <div *ngFor="let product of products" class="product two-column">
         <div>
             <h3>{{ product.name }}</h3>
@@ -20,7 +24,5 @@
             </button>
         </div>
     </div>
-    <button class="product big-text" type="button" (click)="addProduct()">
-        Add Product
-    </button>
+
 </div>

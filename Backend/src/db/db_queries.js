@@ -28,11 +28,26 @@ async function getProductById(id) {
     }
 }
 
+async function getAllCategories() {
+    try {
+        const categories = await sequelize.models.Product.findAll({
+            attributes: [[sequelize.fn('DISTINCT', sequelize.col('category')), 'category']],
+            raw: true,
+        });
+
+        const distinctCategories = categories.map(category => category.category);
+        return distinctCategories;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 async function createProducts() {
-    await sequelize.models.Product.create({ name: 'Book', description: "This is a book", price: 10, quantityInStock: 1, brand: "Lenovo" });
-    await sequelize.models.Product.create({ name: 'Phone', description: "This is a phone", price: 150, quantityInStock: 100, brand: "Samsung" });
-    await sequelize.models.Product.create({ name: 'Helmet', description: "This is a Helmet", price: 50, quantityInStock: 100, brand: "Decathlon" });
-    await sequelize.models.Product.create({ name: 'Ball', description: "This is Ali's ball", price: 60, quantityInStock: 100, brand: "Decathlon" });
+    // await sequelize.models.Product.create({ name: 'Book', description: "This is a book", price: 10, quantityInStock: 1, brand: "Lenovo" });
+    // await sequelize.models.Product.create({ name: 'Phone', description: "This is a phone", price: 150, quantityInStock: 100, brand: "Samsung" });
+    // await sequelize.models.Product.create({ name: 'Helmet', description: "This is a Helmet", price: 50, quantityInStock: 100, brand: "Decathlon" });
+    // await sequelize.models.Product.create({ name: 'Ball', description: "This is Ali's ball", price: 60, quantityInStock: 100, brand: "Decathlon" });
 }
 
 async function updateStockQuantities(leftQuantities) {
@@ -71,7 +86,8 @@ async function createProduct(details) {
         name: details.name,
         description: details.description,
         brand: details.brand,
-        quantityInStock: details.quantityInStock
+        quantityInStock: details.quantityInStock,
+        category: details.category
     });
 }
 
@@ -83,7 +99,8 @@ async function updateProduct(id, details) {
             name: details.name,
             description: details.description,
             brand: details.brand,
-            quantityInStock: details.quantityInStock
+            quantityInStock: details.quantityInStock,
+            category: details.category
         });
     }
     else {
@@ -101,4 +118,4 @@ async function deleteProduct(id) {
     }
 }
 
-export { getAllProducts, getProductById, createOrder, createProducts, getAllOrders, updateStockQuantities, createProduct, updateProduct, deleteProduct };
+export { getAllCategories, getAllProducts, getProductById, createOrder, createProducts, getAllOrders, updateStockQuantities, createProduct, updateProduct, deleteProduct };

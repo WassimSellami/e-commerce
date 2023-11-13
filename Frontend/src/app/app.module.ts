@@ -16,6 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { ProductFormComponent } from './pages/product-form/product-form.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CategoryBarComponent } from './utility-components/category-bar/category-bar.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     ConfirmationDialogComponent,
     AdminPageComponent,
     ProductFormComponent,
+    CategoryBarComponent,
   ],
   bootstrap: [
     AppComponent

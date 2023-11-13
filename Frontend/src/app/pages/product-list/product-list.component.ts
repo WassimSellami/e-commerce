@@ -34,13 +34,10 @@ export class ProductListComponent implements OnInit {
         }
       })
     })
-
   }
 
-
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['searchKeywords'] && changes['searchKeywords'].currentValue != '' && changes['searchKeywords'].currentValue !== changes['searchKeywords'].previousValue) {
+    if (changes['searchKeywords'] && changes['searchKeywords'].currentValue !== changes['searchKeywords'].previousValue) {
       this.searchProducts(this.searchKeywords);
     }
   }

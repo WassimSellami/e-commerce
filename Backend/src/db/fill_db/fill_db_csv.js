@@ -12,7 +12,8 @@ fs.createReadStream('products_data.csv')
             description: row.description,
             price: parseFloat(row.price),
             quantityInStock: parseInt(row.quantityInStock),
-            brand: row.brand
+            brand: row.brand,
+            category: "Electronics"
         });
     })
     .on('end', async () => {
