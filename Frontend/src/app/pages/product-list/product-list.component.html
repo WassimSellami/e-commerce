@@ -2,51 +2,53 @@
   <app-category-bar></app-category-bar>
 </div>
 
-<div>
-  <h3>Filters:</h3>
-  <div class="box" *ngFor="let filter of filters | keyvalue">
-    <h2>{{filter.key}}</h2>
-    <div *ngFor="let subClass of filter.value; let i = index;">
-      <ng-container *ngIf="filter.key === 'Price'; else checkboxBlock">
-        <div>
-          <label *ngIf="i === 0" style="display: inline-block;">
-            Any Price
-          </label>
-          <label *ngIf="i === 1" style="display: inline-block;">
-            Under {{filter.value[1][1]}} EUR
-          </label>
-          <label *ngIf="i === filter.value.length - 1" style="display: inline-block;">
-            Above {{filter.value[i][0]}} EUR
-          </label>
-          <label *ngIf="i !== 0 && i !== 1 && i !== filter.value.length - 1" style="display: inline-block;">
-            {{subClass[0]}} - {{subClass[1]}} EUR
-          </label>
+<div class="main-container">
+  <div class="filters-container">
+    <h1>Filters:</h1>
+    <div *ngFor="let filter of filters | keyvalue">
+      <h2>{{filter.key}}</h2>
+      <div *ngFor="let subClass of filter.value; let i = index;">
+        <ng-container *ngIf="filter.key === 'Price'; else checkboxBlock">
+          <div>
+            <label *ngIf="i === 0" style="display: inline-block;">
+              Any Price
+            </label>
+            <label *ngIf="i === 1" style="display: inline-block;">
+              Under {{filter.value[1][1]}} EUR
+            </label>
+            <label *ngIf="i === filter.value.length - 1" style="display: inline-block;">
+              Above {{filter.value[i][0]}} EUR
+            </label>
+            <label *ngIf="i !== 0 && i !== 1 && i !== filter.value.length - 1" style="display: inline-block;">
+              {{subClass[0]}} - {{subClass[1]}} EUR
+            </label>
 
-          <input type="radio" name="priceGroup" (change)="selectFilter(filter.key, i, true)" [checked]="i==0">
-        </div>
-      </ng-container>
+            <input type="radio" name="priceGroup" (change)="selectFilter(filter.key, i, true)" [checked]="i==0">
+          </div>
+        </ng-container>
 
-      <ng-template #checkboxBlock>
-        <div>
-          <label style="display: inline-block;">
-            {{subClass}}
-          </label>
-          <input type="checkbox" (change)="selectFilter(filter.key, i)">
-        </div>
-      </ng-template>
+        <ng-template #checkboxBlock>
+          <div>
+            <label style="display: inline-block;">
+              {{subClass}}
+            </label>
+            <input type="checkbox" (change)="selectFilter(filter.key, i)">
+          </div>
+        </ng-template>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="products-list">
-  <div *ngFor="let product of products" class="product" (click)="viewProductDetails(product.id)">
-    <h3>
-      <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
-        {{ product.name }}
-      </a>
-    </h3>
-    <h2> {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}</h2>
-    <h2> {{ product.price | currency:'EUR' }}</h2>
-    <h2> {{ product.brand }}</h2>
+  <div class="products-list">
+    <div *ngFor="let product of products" class="product" (click)="viewProductDetails(product.id)">
+      <h3>
+        <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">
+          {{ product.name }}
+        </a>
+      </h3>
+      <h2> {{ product.quantityInStock > 0 ? "In stock" : "Out of stock" }}</h2>
+      <h2> {{ product.price | currency:'EUR' }}</h2>
+      <h2> {{ product.brand }}</h2>
+    </div>
   </div>
 </div>
