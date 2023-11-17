@@ -24,7 +24,9 @@ export class ProductFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private productFormService: ProductFormService,
     private productDetailsService: ProductDetailService
-  ) { }
+  ) {
+    this.productForm = this.formBuilder.group({});
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -43,13 +45,16 @@ export class ProductFormComponent implements OnInit {
   edit = () => {
     this.productDetailsService.getProductDetails(this.id).subscribe((data) => {
       this.product = data;
+      console.log(this.product)
       this.productForm = this.formBuilder.group({
         name: [this.product.name, Validators.required],
         price: [this.product.price, Validators.required],
         description: [this.product.description, Validators.required],
         brand: [this.product.brand, Validators.required],
+        category: [this.product.category, Validators.required],
         addedQuantity: [0, Validators.required],
       });
+      console.log('Product form status:', this.productForm.status);
     });
   }
 
@@ -59,9 +64,12 @@ export class ProductFormComponent implements OnInit {
       price: ['', Validators.required],
       description: ['', Validators.required],
       brand: ['', Validators.required],
+      category: ['', Validators.required],
       quantityInStock: ['', Validators.required],
+      addedQuantity: [0, Validators.required], // Add this line
     });
   }
+
 
   onSubmit = () => {
     const dialogData = this.prepareDialogData();
@@ -85,20 +93,21 @@ export class ProductFormComponent implements OnInit {
         Price: formValue.price,
         Name: formValue.name,
         Description: formValue.description,
-        Brand: formValue.description,
+        Brand: formValue.brand,
+        Category: formValue.category,
         Quantity: this.addMode ? formValue.quantityInStock : this.product.quantityInStock + formValue.addedQuantity
       }
     };
   }
 
   prepareQueryData = (dialogData: any) => {
-    const formValue = this.productForm.value;
     return {
       "price": dialogData.fields.Price,
       "name": dialogData.fields.Name,
       "description": dialogData.fields.Description,
       "brand": dialogData.fields.Brand,
-      "quantityInStock": dialogData.fields.Quantity
+      "quantityInStock": dialogData.fields.Quantity,
+      "category": dialogData.fields.Category
     };
   }
 

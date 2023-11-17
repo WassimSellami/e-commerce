@@ -22,11 +22,12 @@ export class TopBarComponent {
       this.emit(keywords);
     }
     else {
-      this.router.navigate(['/products', { "k": keywords }]);
+      this.router.navigate(['/products'], { queryParams: { k: keywords } });
     }
   }
 
   private isProductsRoute() {
-    return this.router.url === '/products';
+    const url = this.router.url;
+    return url.includes('/products');
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/products';
 import { HttpClient } from '@angular/common/http';
+import { CartComponent } from '../pages/cart/cart.component';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,9 @@ export class ProductDetailService {
     return this.http.get<Product>(`${this.baseURL}${productId}`);
   }
 
-  getProducts = () => {
-    return this.http.get<Product[]>(this.baseURL);
+  getProducts = (category: String = "All") => {
+    const url = `${this.baseURL}?category=${category}`;
+    return this.http.get<Product[]>(url);
   }
 
   getCategories = () => {

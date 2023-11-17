@@ -1,5 +1,5 @@
 <div *ngFor="let category of allCategories">
-    <a routerLink="/products">
+    <a (click)="selectCategory(category)">
         <h1>{{category}}</h1>
     </a>
 </div>

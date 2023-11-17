@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
 
 @Component({
@@ -13,11 +14,16 @@ export class CategoryBarComponent implements OnInit {
 
   constructor(
     private productDetailService: ProductDetailService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.productDetailService.getCategories().subscribe((data) => {
       this.allCategories = data;
     })
+  }
+
+  selectCategory = (category: String) => {
+    this.router.navigate(['/products'], { queryParams: { category: category } });
   }
 }

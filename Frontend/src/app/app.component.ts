@@ -26,6 +26,7 @@ export class AppComponent {
   }
 
   private checkRoute() {
-    this.isProductListRoute = this.router.url === '/products';
+    const url = this.router.url;
+    this.isProductListRoute = url.includes('/products')
   }
 }

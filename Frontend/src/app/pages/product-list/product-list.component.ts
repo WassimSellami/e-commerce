@@ -12,6 +12,7 @@ export class ProductListComponent implements OnInit {
   allProducts: Product[] = [];
   products: Product[] = [];
   searchedProducts: Product[] = [];
+  category = "All"
   categories = ['Brand', 'Price'];
   filters: { [key: string]: any[] } = {};
   selectedFilters: { [key: string]: Set<number> } = {};
@@ -21,24 +22,28 @@ export class ProductListComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
   @Input() searchKeywords: String = '';
-
-  ngOnInit() {
-    this.productDetailService.getProducts().subscribe((data) => {
-      this.allProducts = data;
-      this.products = this.allProducts;
-      this.searchedProducts = this.allProducts;
-      this.initFilters();
-      this.route.params.subscribe(params => {
-        if (params['k'] && params['k'] != '') {
-          this.searchProducts(params['k']);
-        }
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(queryParams => {
+      if (queryParams['category']) {
+        this.category = queryParams['category'];
+      }
+      this.searchKeywords = ''
+      if (queryParams['k']) {
+        this.searchKeywords = queryParams['k'];
+      }
+      console.log(this.category)
+      this.productDetailService.getProducts(this.category).subscribe((data) => {
+        this.allProducts = data;
+        this.products = this.allProducts;
+        this.searchedProducts = this.allProducts;
+        this.initFilters();
       })
-    })
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['searchKeywords'] && changes['searchKeywords'].currentValue !== changes['searchKeywords'].previousValue) {
-      this.searchProducts(this.searchKeywords);
+      this.searchProducts();
     }
   }
 
@@ -79,23 +84,29 @@ export class ProductListComponent implements OnInit {
       if (!this.filters['Brand']) {
         this.filters['Brand'] = []
       }
-
       brands.add(product.brand.toUpperCase());
     }
     this.filters['Brand'] = [...brands];
   }
 
   viewProductDetails(id: number) {
-    this.router.navigate(['/products', id]);
+    this.router.navigate(['/product', id]);
   }
 
-  searchProducts(searchKeywords: String) {
-    const searchTermUpperList = searchKeywords.trim().split(/\s+/).map(searchTerm => searchTerm.toUpperCase().trim());
-    this.searchedProducts = this.allProducts.filter(item =>
-      searchTermUpperList.some(searchTerm =>
-        item.name.toUpperCase().includes(searchTerm) || (item.description.toUpperCase().includes(searchTerm)) || (item.brand.toUpperCase().includes(searchTerm))
-      )
-    );
-    this.products = this.searchedProducts
+  searchProducts() {
+    this.productDetailService.getProducts().subscribe((data) => {
+      this.products = data;
+      this.initFilters();
+      if (this.searchKeywords == '') {
+        return;
+      }
+      const searchTermUpperList = this.searchKeywords.trim().split(/\s+/).map(searchTerm => searchTerm.toUpperCase().trim());
+      this.searchedProducts = this.products.filter(item =>
+        searchTermUpperList.some(searchTerm =>
+          item.name.toUpperCase().includes(searchTerm) || (item.description.toUpperCase().includes(searchTerm)) || (item.brand.toUpperCase().includes(searchTerm))
+        )
+      );
+      this.products = this.searchedProducts
+    })
   }
 }

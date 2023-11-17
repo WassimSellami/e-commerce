@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/products';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
 import { AdminPageService } from 'src/app/services/admin-page.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/utility-components/confirmation-dialog/confirmation-dialog.component';
 
@@ -13,11 +13,13 @@ import { ConfirmationDialogComponent } from 'src/app/utility-components/confirma
 })
 export class AdminPageComponent implements OnInit {
   products: Product[] = [];
+  category = "Electronics";
 
   constructor(
     private productDetailService: ProductDetailService,
     private adminPageService: AdminPageService,
     private router: Router,
+    private route: ActivatedRoute,
     private dialog: MatDialog
   ) { }
 

@@ -29,7 +29,7 @@ import { CategoryBarComponent } from './utility-components/category-bar/category
     MatSlideToggleModule,
     RouterModule.forRoot([
       { path: 'products', component: ProductListComponent },
-      { path: 'products/:id', component: ProductDetailComponent },
+      { path: 'product/:id', component: ProductDetailComponent },
       { path: 'cart', component: CartComponent },
       { path: 'shipping', component: ShippingComponent },
       { path: 'adminPage', component: AdminPageComponent },
