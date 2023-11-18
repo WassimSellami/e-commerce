@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getAllProducts, getProductById, updateStockQuantities, createProduct, updateProduct, deleteProduct, getAllCategories } from '../db/db_queries.js';
+import { getProductsByCategory, getAllProducts, getProductById, updateStockQuantities, createProduct, updateProduct, deleteProduct, getAllCategories } from '../db/db_queries.js';
 
 const router = express.Router();
 
@@ -8,7 +8,8 @@ router.use(bodyParser.json());
 
 router.get('/', async (req, res) => {
     try {
-        const products = await getAllProducts();
+        const category = req.query.category;
+        const products = (category == "All") ? await getAllProducts() : await getProductsByCategory(category);
         res.status(200).json(products);
     }
     catch (error) {

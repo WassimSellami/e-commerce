@@ -4,7 +4,7 @@ import { createProduct } from '../db_queries.js';
 
 const productsDetails = [];
 
-fs.createReadStream('products_data.csv')
+fs.createReadStream('sports_data.csv')
     .pipe(csv())
     .on('data', (row) => {
         productsDetails.push({
@@ -13,7 +13,7 @@ fs.createReadStream('products_data.csv')
             price: parseFloat(row.price),
             quantityInStock: parseInt(row.quantityInStock),
             brand: row.brand,
-            category: "Electronics"
+            category: row.category
         });
     })
     .on('end', async () => {

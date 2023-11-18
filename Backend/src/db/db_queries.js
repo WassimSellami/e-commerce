@@ -1,5 +1,18 @@
 import { sequelize } from './db_connect.js';
 
+async function getProductsByCategory(category) {
+    try {
+        const products = await sequelize.models.Product.findAll({
+            where: {
+                category: category
+            }
+        });
+        return products;
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function getAllProducts() {
     try {
         const products = await sequelize.models.Product.findAll();
@@ -34,7 +47,6 @@ async function getAllCategories() {
             attributes: [[sequelize.fn('DISTINCT', sequelize.col('category')), 'category']],
             raw: true,
         });
-
         const distinctCategories = categories.map(category => category.category);
         return distinctCategories;
     } catch (error) {
@@ -118,4 +130,4 @@ async function deleteProduct(id) {
     }
 }
 
-export { getAllCategories, getAllProducts, getProductById, createOrder, createProducts, getAllOrders, updateStockQuantities, createProduct, updateProduct, deleteProduct };
+export { getAllProducts, getAllCategories, getProductsByCategory, getProductById, createOrder, createProducts, getAllOrders, updateStockQuantities, createProduct, updateProduct, deleteProduct };
