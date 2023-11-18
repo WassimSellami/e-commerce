@@ -1,33 +1,32 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
   styleUrls: ['./top-bar.component.css']
 })
-export class TopBarComponent {
-  showSearchDiv: boolean = false;
+
+export class TopBarComponent implements OnInit {
+  searchKeywords: String = '';
+
   constructor(private router: Router) { }
 
-  @Output() emitter: EventEmitter<string>
-    = new EventEmitter<string>();
-
-  emit(searchKeywords: string) {
-    this.emitter.emit(searchKeywords);
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.emptySearchKeywords();
+    });
+  }
+  goToSearchPage = (keywords: any) => {
+    this.router.navigate(['/search'], { queryParams: { k: keywords } });
   }
 
-  goToProductsPage = (keywords: any) => {
-    if (this.isProductsRoute()) {
-      this.emit(keywords);
+  emptySearchKeywords = () => {
+    if (!this.router.url.includes('/search')) {
+      this.searchKeywords = ''
     }
-    else {
-      this.router.navigate(['/products'], { queryParams: { k: keywords } });
-    }
-  }
-
-  private isProductsRoute() {
-    const url = this.router.url;
-    return url.includes('/products');
   }
 }

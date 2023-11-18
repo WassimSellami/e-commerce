@@ -17,6 +17,7 @@ import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { ProductFormComponent } from './pages/product-form/product-form.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CategoryBarComponent } from './utility-components/category-bar/category-bar.component';
+import { SearchComponent } from './pages/search/search.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { CategoryBarComponent } from './utility-components/category-bar/category
       { path: 'shipping', component: ShippingComponent },
       { path: 'adminPage', component: AdminPageComponent },
       { path: 'productForm', component: ProductFormComponent },
+      { path: 'search', component: SearchComponent },
     ])
   ],
   declarations: [
@@ -47,6 +49,7 @@ import { CategoryBarComponent } from './utility-components/category-bar/category
     AdminPageComponent,
     ProductFormComponent,
     CategoryBarComponent,
+    SearchComponent,
   ],
   bootstrap: [
     AppComponent

@@ -7,8 +7,9 @@
 </a>
 
 <div>
-  <input type="text" placeholder="Search Products" (keydown.enter)="goToProductsPage(keywords.value)" #keywords />
-  <button (click)="goToProductsPage(keywords.value)">Search</button>
+  <input type="text" [(ngModel)]="searchKeywords" placeholder="Search Products"
+    (keydown.enter)="goToSearchPage(keywords.value)" #keywords />
+  <button (click)="goToSearchPage(keywords.value)">Search</button>
 </div>
 
 <a routerLink="/cart" class="button fancy-button">

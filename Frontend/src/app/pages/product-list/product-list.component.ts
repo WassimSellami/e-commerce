@@ -9,11 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  allProducts: Product[] = [];
+  categoryProducts: Product[] = [];
   products: Product[] = [];
-  searchedProducts: Product[] = [];
   category = "All"
-  categories = ['Brand', 'Price'];
   filters: { [key: string]: any[] } = {};
   selectedFilters: { [key: string]: Set<number> } = {};
   constructor(
@@ -21,39 +19,26 @@ export class ProductListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) { }
-  @Input() searchKeywords: String = '';
   ngOnInit(): void {
     this.route.queryParams.subscribe(queryParams => {
       if (queryParams['category']) {
         this.category = queryParams['category'];
       }
-      this.searchKeywords = ''
-      if (queryParams['k']) {
-        this.searchKeywords = queryParams['k'];
-      }
-      console.log(this.category)
       this.productDetailService.getProducts(this.category).subscribe((data) => {
-        this.allProducts = data;
-        this.products = this.allProducts;
-        this.searchedProducts = this.allProducts;
+        this.categoryProducts = data;
+        this.products = this.categoryProducts;
         this.initFilters();
       })
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['searchKeywords'] && changes['searchKeywords'].currentValue !== changes['searchKeywords'].previousValue) {
-      this.searchProducts();
-    }
-  }
-
   applyFilters() {
-    this.products = this.searchedProducts;
+    this.products = this.categoryProducts;
     if (this.selectedFilters['Brand'] && this.selectedFilters['Brand'].size > 0) {
       const selectedBrands = [...this.selectedFilters['Brand']].map(index => { return this.filters['Brand'][index] })
       this.products = this.products.filter(item =>
-        selectedBrands.some(searchTerm =>
-          item.brand.toUpperCase().includes(searchTerm))
+        selectedBrands.some(filterTerm =>
+          item.brand.toUpperCase().includes(filterTerm))
       );
     }
     if (this.selectedFilters['Price'] && this.selectedFilters['Price'].size > 0) {
@@ -91,22 +76,5 @@ export class ProductListComponent implements OnInit {
 
   viewProductDetails(id: number) {
     this.router.navigate(['/product', id]);
-  }
-
-  searchProducts() {
-    this.productDetailService.getProducts().subscribe((data) => {
-      this.products = data;
-      this.initFilters();
-      if (this.searchKeywords == '') {
-        return;
-      }
-      const searchTermUpperList = this.searchKeywords.trim().split(/\s+/).map(searchTerm => searchTerm.toUpperCase().trim());
-      this.searchedProducts = this.products.filter(item =>
-        searchTermUpperList.some(searchTerm =>
-          item.name.toUpperCase().includes(searchTerm) || (item.description.toUpperCase().includes(searchTerm)) || (item.brand.toUpperCase().includes(searchTerm))
-        )
-      );
-      this.products = this.searchedProducts
-    })
   }
 }

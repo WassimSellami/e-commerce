@@ -45,7 +45,6 @@ export class ProductFormComponent implements OnInit {
   edit = () => {
     this.productDetailsService.getProductDetails(this.id).subscribe((data) => {
       this.product = data;
-      console.log(this.product)
       this.productForm = this.formBuilder.group({
         name: [this.product.name, Validators.required],
         price: [this.product.price, Validators.required],
