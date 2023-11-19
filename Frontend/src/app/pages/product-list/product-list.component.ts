@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/products';
 import { ProductDetailService } from 'src/app/services/product-detail.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,11 +14,16 @@ export class ProductListComponent implements OnInit {
   category = "All"
   filters: { [key: string]: any[] } = {};
   selectedFilters: { [key: string]: Set<number> } = {};
+  sortingOptions: any;
+  sortFunctions: Map<String, (a: Product, b: Product) => number> = new Map([]);
+  selectedSortOption: String = 'price-asc'
+
   constructor(
     private productDetailService: ProductDetailService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
+
   ngOnInit(): void {
     this.route.queryParams.subscribe(queryParams => {
       if (queryParams['category']) {
@@ -28,6 +33,8 @@ export class ProductListComponent implements OnInit {
         this.categoryProducts = data;
         this.products = this.categoryProducts;
         this.initFilters();
+        this.initSortingFunctions();
+        this.onSortChange();
       })
     });
   }
@@ -63,6 +70,8 @@ export class ProductListComponent implements OnInit {
   }
 
   initFilters() {
+    this.onSortChange();
+    // initialize from constants class
     this.filters['Price'] = [[0, 100000], [0, 200], [200, 500], [500, 1000], [1000, 1500], [1500, 2000]];
     let brands = new Set<String>;
     for (const product of this.products) {
@@ -74,7 +83,31 @@ export class ProductListComponent implements OnInit {
     this.filters['Brand'] = [...brands];
   }
 
+  initSortingFunctions = () => {
+    // initialize from constants class
+    this.sortingOptions = [
+      { value: 'price-asc', label: 'Price: Low to High' },
+      { value: 'price-desc', label: 'Price: High to Low' },
+      { value: 'newest', label: 'Newest arrivals' }
+    ]
+    // initialize from constants class
+    this.sortFunctions = new Map<string, (a: Product, b: Product) => number>([
+      ['price-asc', (a, b) => a.price - b.price],
+      ['price-desc', (a, b) => b.price - a.price],
+      ['newest', (a, b) => {
+        if (a.createdAt < b.createdAt) { return 1; }
+        else if (a.createdAt > b.createdAt) { return -1; }
+        else { return 0; }
+      }],
+    ]);
+  }
+
   viewProductDetails(id: number) {
     this.router.navigate(['/product', id]);
+  }
+
+  onSortChange() {
+    const cmpFunction = this.sortFunctions.get(this.selectedSortOption)
+    this.products.sort(cmpFunction)
   }
 }

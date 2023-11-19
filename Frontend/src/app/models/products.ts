@@ -6,6 +6,7 @@ export interface Product {
   brand: string;
   category: string;
   quantityInStock: number;
+  createdAt: Date;
 }
 
 export interface Item {

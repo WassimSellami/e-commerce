@@ -42,6 +42,15 @@
     </div>
 
     <div class="products-list">
+        <div class="products-info-bar">
+            <h2>{{products.length}} of {{products.length}} results.</h2>
+            <div class="sort-bar">
+                <label for="sort">Sort by:</label>
+                <select id="sort" (change)="onSortChange()" [(ngModel)]="selectedSortOption">
+                    <option *ngFor="let option of sortingOptions" [value]="option.value">{{ option.label }}</option>
+                </select>
+            </div>
+        </div>
         <div *ngFor="let product of products" class="product" (click)="viewProductDetails(product.id)">
             <h3>
                 <a [title]="product.name + ' details'" [routerLink]="['/products', product.id]">

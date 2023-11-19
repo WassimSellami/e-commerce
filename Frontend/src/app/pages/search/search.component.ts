@@ -17,6 +17,10 @@ export class SearchComponent implements OnInit {
   searchedProducts: Product[] = [];
   filters: { [key: string]: any[] } = {};
   selectedFilters: { [key: string]: Set<number> } = {};
+  sortingOptions: any;
+  sortFunctions: Map<String, (a: Product, b: Product) => number> = new Map([]);
+  selectedSortOption: String = 'price-asc'
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -32,12 +36,13 @@ export class SearchComponent implements OnInit {
         this.searchedProducts = this.allProducts;
         this.searchProducts();
         this.initFilters();
+        this.initSortingFunctions();
+        this.onSortChange();
       })
     })
   }
 
   searchProducts() {
-    // console.log("gdq:", this.keywords)
     const searchTermUpperList = this.keywords.trim().split(/\s+/).map(searchTerm => searchTerm.toUpperCase().trim());
     this.searchedProducts = this.allProducts.filter(item =>
       searchTermUpperList.some(searchTerm =>
@@ -80,6 +85,25 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  initSortingFunctions = () => {
+    // initialize from constants class
+    this.sortingOptions = [
+      { value: 'price-asc', label: 'Price: Low to High' },
+      { value: 'price-desc', label: 'Price: High to Low' },
+      { value: 'newest', label: 'Newest arrivals' }
+    ]
+    // initialize from constants class
+    this.sortFunctions = new Map<string, (a: Product, b: Product) => number>([
+      ['price-asc', (a, b) => a.price - b.price],
+      ['price-desc', (a, b) => b.price - a.price],
+      ['newest', (a, b) => {
+        if (a.createdAt < b.createdAt) { return 1; }
+        else if (a.createdAt > b.createdAt) { return -1; }
+        else { return 0; }
+      }],
+    ]);
+  }
+
   selectFilter(filter: string, index: number, isRadio: boolean = false) {
     if (!this.selectedFilters[filter] || isRadio) {
       this.selectedFilters[filter] = new Set<number>();
@@ -90,5 +114,10 @@ export class SearchComponent implements OnInit {
       this.selectedFilters[filter].add(index);
     }
     this.applyFilters();
+  }
+
+  onSortChange() {
+    const cmpFunction = this.sortFunctions.get(this.selectedSortOption)
+    this.products.sort(cmpFunction)
   }
 }

@@ -155,8 +155,27 @@ button:disabled {
   background-color: lightgray;
 }
 
-/* Top Bar */
+.products-info-bar {
+  height: 60px;
+  background-color: lightgray;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
 
+.sort-bar {
+  display: flex;
+}
+
+.sort-bar h2 {
+  margin-right: 20px;
+}
+
+/* Top Bar */
 app-top-bar {
   width: 100%;
   height: 68px;
