@@ -2,8 +2,8 @@
   <h1>My Store</h1>
 </a>
 
-<a routerLink="/adminPage">
-  <h1>Manage Store</h1>
+<a routerLink="/adminPage" *ngIf="isAdminUser()">
+  <h1>Manage Store </h1>
 </a>
 
 <div>
@@ -15,3 +15,16 @@
 <a routerLink="/cart" class="button fancy-button">
   <em class="material-icons">shopping_cart</em>Checkout
 </a>
+
+
+<div *ngIf="isUserLogged(); else login">
+  <h1>Hammadi</h1>
+</div>
+
+<ng-template #login>
+  <div>
+    <input type="text" placeholder="Username" #username />
+    <input type="password" placeholder="Password" #password />
+    <a routerLink="/cart" class="button fancy-button">Login</a>
+  </div>
+</ng-template>

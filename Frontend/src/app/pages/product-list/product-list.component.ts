@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  categoryProducts: Product[] = [];
+  allProducts: Product[] = [];
   products: Product[] = [];
   category = "All"
   filters: { [key: string]: any[] } = {};
@@ -19,9 +19,9 @@ export class ProductListComponent implements OnInit {
   selectedSortOption: String = 'price-asc'
 
   constructor(
-    private productDetailService: ProductDetailService,
-    private router: Router,
-    private route: ActivatedRoute
+    protected productDetailService: ProductDetailService,  // Remove the private keyword
+    protected router: Router,
+    protected route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -30,8 +30,8 @@ export class ProductListComponent implements OnInit {
         this.category = queryParams['category'];
       }
       this.productDetailService.getProducts(this.category).subscribe((data) => {
-        this.categoryProducts = data;
-        this.products = this.categoryProducts;
+        this.allProducts = data;
+        this.products = this.allProducts;
         this.initFilters();
         this.initSortingFunctions();
         this.onSortChange();
@@ -40,7 +40,7 @@ export class ProductListComponent implements OnInit {
   }
 
   applyFilters() {
-    this.products = this.categoryProducts;
+    this.products = this.allProducts;
     if (this.selectedFilters['Brand'] && this.selectedFilters['Brand'].size > 0) {
       const selectedBrands = [...this.selectedFilters['Brand']].map(index => { return this.filters['Brand'][index] })
       this.products = this.products.filter(item =>

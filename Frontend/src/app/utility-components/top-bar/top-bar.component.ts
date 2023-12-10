@@ -29,4 +29,13 @@ export class TopBarComponent implements OnInit {
       this.searchKeywords = ''
     }
   }
+
+  isAdminUser = () => {
+    var isUserAdmin = true;
+    return this.isUserLogged() && isUserAdmin;
+  }
+
+  isUserLogged = () => {
+    return false;
+  }
 }
