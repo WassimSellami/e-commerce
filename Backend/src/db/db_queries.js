@@ -1,5 +1,14 @@
 import { sequelize } from './db_connect.js';
 
+async function findUserByUsername(username) {
+    try {
+        const user = await sequelize.models.User.findOne({ where: { username } });
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function getProductsByCategory(category) {
     try {
         const products = await sequelize.models.Product.findAll({
@@ -60,6 +69,11 @@ async function createProducts() {
     // await sequelize.models.Product.create({ name: 'Phone', description: "This is a phone", price: 150, quantityInStock: 100, brand: "Samsung" });
     // await sequelize.models.Product.create({ name: 'Helmet', description: "This is a Helmet", price: 50, quantityInStock: 100, brand: "Decathlon" });
     // await sequelize.models.Product.create({ name: 'Ball', description: "This is Ali's ball", price: 60, quantityInStock: 100, brand: "Decathlon" });
+}
+
+async function createUsers() {
+    await sequelize.models.User.create({ username: 'Hammadi', password: "hello", isAdmin: true });
+    await sequelize.models.User.create({ username: 'normalUser', password: "hello", isAdmin: false });
 }
 
 async function updateStockQuantities(leftQuantities) {
@@ -130,4 +144,4 @@ async function deleteProduct(id) {
     }
 }
 
-export { getAllProducts, getAllCategories, getProductsByCategory, getProductById, createOrder, createProducts, getAllOrders, updateStockQuantities, createProduct, updateProduct, deleteProduct };
+export { findUserByUsername, getAllProducts, getAllCategories, getProductsByCategory, getProductById, createOrder, createProducts, createUsers, getAllOrders, updateStockQuantities, createProduct, updateProduct, deleteProduct };

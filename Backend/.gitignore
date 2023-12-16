@@ -1,3 +1,8 @@
+# Ignore config.cjs
+config.cjs
+
+# Ignore .env files
+.env
 db_setup.js
 # Logs
 logs

@@ -1,13 +1,23 @@
 import { Sequelize, DataTypes } from 'sequelize';
-const sequelize = new Sequelize({
-    dialect: 'mysql',
-    host: 'localhost',
-    username: 'root',
-    password: 'root',
-    database: 'e_commerce_db',
-    port: 3307,
-});
+import config from './config/config.cjs';
+
+const sequelize = new Sequelize(config.development);
 async function setupDB() {
+    const User = sequelize.define('User', {
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        password: {
+            type: DataTypes.STRING, // Assuming you will store hashed passwords
+            allowNull: false,
+        },
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+        },
+    });
+
     const Product = sequelize.define('Product', {
         name: {
             type: DataTypes.STRING,
