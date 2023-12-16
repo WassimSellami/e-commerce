@@ -7,15 +7,16 @@ async function setupDB() {
         username: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
         },
-        password: {
-            type: DataTypes.STRING, // Assuming you will store hashed passwords
+        hashedPassword: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
         isAdmin: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
-        },
+            defaultValue: false,
+        }
     });
 
     const Product = sequelize.define('Product', {
