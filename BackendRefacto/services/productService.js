@@ -1,5 +1,9 @@
 import { Product } from '../models/index.js'
 
-export const getAllProductss = async () => {
-    return await Product.findAll();
+const productService = {
+    getAllProducts: async () => {
+        return await Product.findAll();
+    }
 };
+
+export default productService;

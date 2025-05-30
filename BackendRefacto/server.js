@@ -1,5 +1,6 @@
 import express from 'express';
 import productRoutes from './routes/productRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 
 // import cors from 'cors';
 const app = express();
@@ -13,6 +14,7 @@ app.get('/', (req, res) => {
 
 // Use the productRoute module for '/api/products' route
 app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
