@@ -7,8 +7,8 @@ const router = express.Router();
 router.use(bodyParser.json());
 
 router.get('/', getProductsByCategory);
-router.get('/:id', getProductById);
 router.get('/categories', getCategories);
+router.get('/:id', getProductById);
 router.patch('/quantity', updateProductQuantities);
 router.post('/', createProduct);
 router.put('/:id', updateProductById);

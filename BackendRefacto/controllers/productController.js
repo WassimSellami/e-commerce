@@ -80,7 +80,7 @@ export const deleteProductById = async (req, res) => {
     try {
         const id = req.params.id;
         await productService.deleteProductById(id);
-        res.status(204).json({});
+        res.sendStatus(204);
     } catch (err) {
         console.log(err.message)
         res.status(500).json({ error: 'Internal Server Error' });

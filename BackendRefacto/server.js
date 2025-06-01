@@ -1,6 +1,7 @@
 import express from 'express';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+// import { importProductsFromCSV } from './utils/fill_db.js';
 
 // import cors from 'cors';
 const app = express();
@@ -19,3 +20,9 @@ app.use('/api/orders', orderRoutes);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
+
+// try {
+//     await importProductsFromCSV();
+// } catch (err) {
+//     console.error('Error importing products from CSV:', err.message);
+// }
